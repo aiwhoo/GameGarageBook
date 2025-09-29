@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fishy Game</title>
+    <script src="https://unpkg.com/kontra@10.0.2/kontra.js"></script>
+    <style>
+      canvas {
+        display: block;
+        margin: auto;
+        background-color: #88ccee;
+        border: 3px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="game" width="800" height="600"></canvas>
+    <script>
+
+      let { init, Sprite, GameLoop, initKeys, keyPressed, load } = kontra;
+      let { canvas, context } = init('game');
+
+      // enable keyboard
+      initKeys();
+    </script>
+  </body>
+</html>
