@@ -20,6 +20,10 @@
 
             // enable keyboard
             initKeys();
+            // load images
+            load('background.png', 'player.png').then(images => {
+                let [backgroundImage, playerImage] = images;
+            });
             let player = Sprite({
                 x: 100,
                 y: 100,
@@ -27,13 +31,29 @@
                 height: 30,
                 color: 'orange',
                 update() {
-                    this.x += 2;
+                    // movement of arrow keys, we have replaced this.x += 2; with arrow keys movement shown below
+                    if (keyPressed('arrowleft')) this.x -= 2;
+                    if (keyPressed('arrowright')) this.x += 2;
+                    if (keyPressed('arrowup')) this.y -= 2;
+                    if (keyPressed('arrowdown')) this.y += 2;
+                    //this.advance();
                 },
                 render() {
                     this.context.fillStyle = this.color;
                     this.context.fillRect(this.x, this.y, this.width, this.height)
                 }
             });
+            //Game Logic
+            let loop = kontra.GameLoop({
+                update(){
+                    player.update();
+                },
+                render(){
+                    background.render();  //draw ocean first
+                    player.render();      // then draw fish
+                }
+            });
+            loop.start();
         </script>
     </body>
 </html>

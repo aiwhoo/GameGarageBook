@@ -34,6 +34,17 @@
                     this.context.fillRect(this.x, this.y, this.width, this.height)
                 }
             });
+            //Game Logic
+            let loop = kontra.GameLoop({
+                update(){
+                    player.update();
+                },
+                render(){
+                    player.render();
+                }
+            });
+
+            loop.start();
         </script>
     </body>
 </html>
