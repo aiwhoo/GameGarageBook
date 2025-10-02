@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Fishy Game</title>
+        <script src="https://unpkg.com/kontra@10.0.2/kontra.js"></script>
+        <style>
+            canvas {
+                display: block;
+                margin: auto;
+                background-color: #88ccee;
+                border: 3px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="game" width="800" height="600"></canvas>
+        <script>
+            let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
+            let {canvas, context} = init('game');
+            // enable keyboard
+            initKeys();
+            // load images
+            load('background.png', 'player.png').then(images => {
+                let [backgroundImage, playerImage] = images;
+                // background Sprite
+                let background = Sprite({
+                    x: 0,
+                    y: 0,
+                    image: backgroundImage,
+                    width: canvas.width,
+                    height: canvas.height,
+                    render() {
+                        this.context.drawImage
+                        (this.image, this.x, this.y, canvas.width, canvas.height);
+                    }
+                });
+                // Now we will update the player
+                let player = Sprite({
+                    x: 100,
+                    y: 100,
+                    width: 40,
+                    height: 30,
+                    image: playerImage,
+                    update() {
+                        // movement of arrow keys, we have replaced this.x += 2; with arrow keys movement shown below
+                        if (keyPressed('arrowleft')) this.x -= 6;
+                        if (keyPressed('arrowright')) this.x += 6;
+                        if (keyPressed('arrowup')) this.y -= 6;
+                        if (keyPressed('arrowdown')) this.y += 6;
+                    },
+                });
+                ///// lesson 2 start, Creating one enemy rectangle, now we will update our previous enemy sprite with the following
+                let enemy = Sprite({
+                    x: 800,         //it will start off the right edge
+                    y: Math.random() * (canvas.height - 30),   //random vertical position
+                    width: 60,
+                    height: 30,
+                    dx: -(Math.random() * 3+1),      //move speed between -1 and -4
+                    color: 'red',  //enemy color
+                    update() {
+                        this.advance();
+                    },
+                    render() {
+                        this.context.fillStyle = this.color;
+                        this.context.fillRect(this.x, this.y, this.width, this.height);
+                    }
+                });
+                //Game Logic
+                let loop = kontra.GameLoop({
+                    update() {
+                        player.update();
+                        enemy.update();
+                    },
+                    render() {
+                        background.render();
+                        player.render();
+                        enemy.render();
+                    }
+                });
+                loop.start();
+            });
+        </script>
+    </body>
+</html>

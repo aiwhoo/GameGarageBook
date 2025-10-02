@@ -13,16 +13,16 @@
         </style>
     </head>
     <body>
-        <canvas id="game" width="800" height="600"></canvas>
+    <canvas id="game" width="800" height="600"></canvas>
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
-                        // enable keyboard
+            // enable keyboard
             initKeys();
-                        // load images
-                    load('background.png', 'player.png').then(images => {
-                                let [backgroundImage, playerImage] = images;
-                    });
+            // load images
+            load('background.png', 'player.png').then(images => {
+                let [backgroundImage, playerImage] = images;
+            });
 
             // background Sprite
             let background = Sprite({
@@ -47,7 +47,7 @@
                     if (keyPressed('arrowright')) this.x += 2;
                     if (keyPressed('arrowup')) this.y -= 2;
                     if (keyPressed('arrowdown')) this.y += 2;
-                                        //this.advance();
+                    //this.advance();
                 },
                 render() {
                     this.context.fillStyle = this.color;
