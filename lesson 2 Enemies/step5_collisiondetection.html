@@ -13,7 +13,7 @@
         </style>
     </head>
     <body>
-    <canvas id="game" width="800" height="600"></canvas>
+        <canvas id="game" width="800" height="600"></canvas>
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
@@ -49,18 +49,18 @@
                         if (keyPressed('arrowdown')) this.y += 6;
                     },
                 });
-                ///// lesson 2 start, Creating one enemy rectangle, now we will update our previous enemy sprite with the following
+                /// prepare an Enemy list
                 let enemy = Sprite({
-                    x: 800,         //it will start off the right edge
-                    y: Math.random() * (canvas.height - 30),   //random vertical position
+                    x: 800,
+                    y: Math.random() * (canvas.height - 30),
                     width: 60,
                     height: 30,
-                    dx: -(Math.random() * 3+1),      //move speed between -1 and -4
-                    color: 'red',  //enemy color
+                    dx: -(Math.random() * 3+1),
+                    color: 'red',
                     update() {
                         this.advance();
                         if (this.x + this.width < 0) {
-                            this.ttl =0;  //remove the sprite when offscreen
+                            this.ttl =0;
                         }
                     },
                     render() {
@@ -68,16 +68,32 @@
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                     }
                 });
+                // Prepare an enemy list
+                let enemies = [];
+                  // Collision detection
+                function isoverlapping(min1, max1, min2, max2) {
+                    return max1 >= min2 && max2 >= min1;
+                }
+                function iscolliding(sprite1, sprite2) {
+                    return isoverlapping(sprite1.x, sprite1.x + sprite1.width, sprite2.x, sprite2.x+ sprite2.width) &&
+                        isoverlapping(sprite1.y, sprite.y + sprite1.height, sprite2.y + sprite2.height);
+                }
                 //Game Logic
                 let loop = kontra.GameLoop({
                     update() {
                         player.update();
-                        enemy.update();
+                        enemies.forEach(e => e.update());   //update all enemies
+                        enemies = enemies.filter(e => e.isAlive());
+                        enemies.forEach(e => {
+                            if (iscolliding(player, e)) {
+                                e.color = 'purple';
+                            }
+                        });
                     },
                     render() {
                         background.render();
                         player.render();
-                        enemy.render();
+                        enemies.forEach(e => e.render());  //render all enemies
                     }
                 });
                 loop.start();

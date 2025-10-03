@@ -50,27 +50,26 @@
                     },
                 });
                  /// prepare an Enemy list
-                let enemies = [];
-                ///// lesson 2 start, Creating one enemy rectangle, now we will update our previous enemy sprite with the following
-                function createEnemy() { // 5 enemies to start
-                    return Sprite({
-                        x: canvas.width,
-                        y: Math.random() * (canvas.height - 30),
-                        width: 60,
-                        height: 30,
-                        dx: -(Math.random() * 3 + 1),
-                        color: 'red',
-                        update() {
-                            this.x += this.dx;
-                            if (this.x + this.width < 0)
-                                this.ttl = 0; // remove when offscreen
-                        },
+                let enemy = Sprite({
+                    x: 800,
+                    y: Math.random() * (canvas.height - 30),
+                    width: 60,
+                    height: 30,
+                    dx: -(Math.random() * 3+1),
+                    color: 'red',
+                    update() {
+                        this.advance();
+                        if (this.x + this.width < 0) {
+                            this.ttl =0;
+                        }
+                    },
                         render() {
                             this.context.fillStyle = this.color;
                             this.context.fillRect(this.x, this.y, this.width, this.height);
                         }
                     });
-                }
+                    // Prepare an enemy list
+                let enemies = [];
                 //Game Logic
                 let loop = kontra.GameLoop({
                     update() {
