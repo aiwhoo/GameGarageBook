@@ -17,12 +17,9 @@
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
-            // enable keyboard
             initKeys();
-            // load images
             load('background.png', 'player.png').then(images => {
                 let [backgroundImage, playerImage] = images;
-                // background Sprite
                 let background = Sprite({
                     x: 0,
                     y: 0,
@@ -34,7 +31,6 @@
                         (this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
-                // Now we will update the player
                 let player = Sprite({
                     x: 100,
                     y: 100,
@@ -48,7 +44,6 @@
                         if (keyPressed('arrowdown')) this.y += 6;
                     },
                 });
-                /// prepare an Enemy list
                 let enemy = Sprite({
                     x: 800,
                     y: Math.random() * (canvas.height - 30),
@@ -67,10 +62,7 @@
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                     }
                 });
-                // Prepare an enemy list
                 let enemies = [];
-
-                // Collision detection
                 function isoverlapping(min1, max1, min2, max2) {
                     return max1 >= min2 && max2 >= min1;
                 }
@@ -78,11 +70,8 @@
                     return isoverlapping(sprite1.x, sprite1.x + sprite1.width, sprite2.x, sprite2.x+ sprite2.width) &&
                         isoverlapping(sprite1.y, sprite1.y + sprite1.height, sprite2.y, sprite2.y + sprite2.height);
                 }
-
                 // ✅ Spawn Timer
                 let spawnTimer = 60; // 60 frames = ~1 second
-
-                //Game Logic
                 let loop = kontra.GameLoop({
                     update() {
                         player.update();
@@ -94,7 +83,6 @@
                                 e.color = 'purple';
                             }
                         });
-
                         // ✅ Spawn new enemies every second
                         spawnTimer--;
                         if (spawnTimer <= 0) {

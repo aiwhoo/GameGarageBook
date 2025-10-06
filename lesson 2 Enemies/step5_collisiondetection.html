@@ -17,12 +17,9 @@
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
-            // enable keyboard
             initKeys();
-            // load images
             load('background.png', 'player.png').then(images => {
                 let [backgroundImage, playerImage] = images;
-                // background Sprite
                 let background = Sprite({
                     x: 0,
                     y: 0,
@@ -34,7 +31,6 @@
                         (this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
-                // Now we will update the player
                 let player = Sprite({
                     x: 100,
                     y: 100,
@@ -42,14 +38,12 @@
                     height: 30,
                     image: playerImage,
                     update() {
-                        // movement of arrow keys, we have replaced this.x += 2; with arrow keys movement shown below
                         if (keyPressed('arrowleft')) this.x -= 6;
                         if (keyPressed('arrowright')) this.x += 6;
                         if (keyPressed('arrowup')) this.y -= 6;
                         if (keyPressed('arrowdown')) this.y += 6;
                     },
                 });
-                /// prepare an Enemy list
                 let enemy = Sprite({
                     x: 800,
                     y: Math.random() * (canvas.height - 30),
@@ -68,17 +62,14 @@
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                     }
                 });
-                // Prepare an enemy list
                 let enemies = [];
-                  // Collision detection
-                function isoverlapping(min1, max1, min2, max2) {
+                function isoverlapping(min1, max1, min2, max2) {                // Collision detection
                     return max1 >= min2 && max2 >= min1;
                 }
                 function iscolliding(sprite1, sprite2) {
                     return isoverlapping(sprite1.x, sprite1.x + sprite1.width, sprite2.x, sprite2.x+ sprite2.width) &&
                         isoverlapping(sprite1.y, sprite.y + sprite1.height, sprite2.y + sprite2.height);
                 }
-                //Game Logic
                 let loop = kontra.GameLoop({
                     update() {
                         player.update();
