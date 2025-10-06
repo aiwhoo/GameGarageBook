@@ -25,10 +25,10 @@
                 height: 30,
                 color: 'orange',
                 update() {
-                if (keyPressed('arrowleft')) this.x -= 2;      // updating key movement
-                if (keyPressed('arrowright')) this.x += 2;
-                if (keyPressed('arrowup')) this.y -= 2;
-                if (keyPressed('arrowdown')) this.y += 2;
+                    if (keyPressed('arrowleft')) this.x -= 2;      // updating key movement
+                    if (keyPressed('arrowright')) this.x += 2;
+                    if (keyPressed('arrowup')) this.y -= 2;
+                    if (keyPressed('arrowdown')) this.y += 2;
             },
                 render() {
                     this.context.fillStyle = this.color;
