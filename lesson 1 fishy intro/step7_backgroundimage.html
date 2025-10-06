@@ -17,15 +17,11 @@
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
-            // enable keyboard
             initKeys();
-            // load images
             load('background.png', 'player.png').then(images => {
                 let [backgroundImage, playerImage] = images;
             });
-
-            // background Sprite
-            let background = Sprite({
+            let background = Sprite({        // background Sprite
                 x: 0,
                 y: 0,
                 image: backgroundImage,
@@ -42,19 +38,16 @@
                 height: 30,
                 color: 'orange',
                 update() {
-                    // movement of arrow keys, we have replaced this.x += 2; with arrow keys movement shown below
                     if (keyPressed('arrowleft')) this.x -= 2;
                     if (keyPressed('arrowright')) this.x += 2;
                     if (keyPressed('arrowup')) this.y -= 2;
                     if (keyPressed('arrowdown')) this.y += 2;
-                    //this.advance();
                 },
                 render() {
                     this.context.fillStyle = this.color;
                     this.context.fillRect(this.x, this.y, this.width, this.height)
                 }
             });
-            //Game Logic
             let loop = kontra.GameLoop({
                 update(){
                     player.update();
