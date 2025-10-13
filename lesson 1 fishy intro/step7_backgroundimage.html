@@ -13,7 +13,7 @@
         </style>
     </head>
     <body>
-    <canvas id="game" width="800" height="600"></canvas>
+        <canvas id="game" width="800" height="600"></canvas>
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
@@ -49,10 +49,10 @@
                 }
             });
             let loop = kontra.GameLoop({
-                update(){
+                update() {
                     player.update();
                 },
-                render(){
+                render() {
                     player.render();
                 }
             });

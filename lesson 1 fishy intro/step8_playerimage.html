@@ -18,9 +18,8 @@
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
             initKeys();
-                    load('background.png', 'player.png').then(images => {
-                        let [backgroundImage, playerImage] = images;
-            });
+            load('background.png', 'player.png').then(images => {
+                let [backgroundImage, playerImage] = images;
                 let background = Sprite({
                     x: 0,
                     y: 0,
@@ -29,8 +28,8 @@
                     height: canvas.height,
                     render() {
                         this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
-                }
-            });
+                    }
+                });
                 let player = Sprite({               // Now we will update the player
                     x: 100,
                     y: 100,
@@ -42,21 +41,22 @@
                         if (keyPressed('arrowright')) this.x += 2;
                         if (keyPressed('arrowup')) this.y -= 2;
                         if (keyPressed('arrowdown')) this.y += 2;
-                },
+                    },
                     render() {
                         this.context.fillStyle = this.color;
                         this.context.fillRect(this.x, this.y, this.width, this.height)
-                }
-            });
+                    }
+                });
                 let loop = kontra.GameLoop({
-                    update(){
+                    update() {
                         player.update();
-                },
-            render(){
-                    player.render();
-                }
+                    },
+                    render() {
+                        player.render();
+                    }
+                });
+                loop.start();
             });
-            loop.start();
         </script>
     </body>
 </html>
