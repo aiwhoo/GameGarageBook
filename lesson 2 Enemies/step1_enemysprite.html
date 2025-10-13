@@ -38,13 +38,13 @@
                     height: 30,
                     image: playerImage,
                     update() {
-                        if (keyPressed('arrowleft')) this.x -= 6;
-                        if (keyPressed('arrowright')) this.x += 6;
-                        if (keyPressed('arrowup')) this.y -= 6;
-                        if (keyPressed('arrowdown')) this.y += 6;
+                        if (keyPressed('arrowleft')) this.x -= 4;
+                        if (keyPressed('arrowright')) this.x += 4;
+                        if (keyPressed('arrowup')) this.y -= 4;
+                        if (keyPressed('arrowdown')) this.y += 4;
                     },
                 });
-                let enemy = Sprite({                ///// lesson 2 start, Creating one enemy rectangle
+                let enemy = Sprite({              // lesson 2 start, Creating one enemy rectangle
                     x: 800,
                     y: 200,
                     width: 60,
@@ -59,7 +59,7 @@
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                     }
                 });
-                let loop = kontra.GameLoop({
+                let loop = kontra.GameLoop({    // Game logic
                     update() {
                         player.update();
                         enemy.update();
