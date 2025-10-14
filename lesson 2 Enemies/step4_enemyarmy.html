@@ -27,8 +27,7 @@
                     width: canvas.width,
                     height: canvas.height,
                     render() {
-                        this.context.drawImage
-                        (this.image, this.x, this.y, canvas.width, canvas.height);
+                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
                 let player = Sprite({
@@ -38,10 +37,10 @@
                     height: 30,
                     image: playerImage,
                     update() {
-                        if (keyPressed('arrowleft')) this.x -= 4;
-                        if (keyPressed('arrowright')) this.x += 4;
-                        if (keyPressed('arrowup')) this.y -= 4;
-                        if (keyPressed('arrowdown')) this.y += 4;
+                        if (keyPressed('arrowleft')) this.x -= 2;
+                        if (keyPressed('arrowright')) this.x += 2;
+                        if (keyPressed('arrowup')) this.y -= 2;
+                        if (keyPressed('arrowdown')) this.y += 2;
                     },
                 });
                 let enemy = Sprite({
@@ -49,30 +48,30 @@
                     y: Math.random() * (canvas.height - 30),
                     width: 60,
                     height: 30,
-                    dx: -(Math.random() * 3+1),
-                    color: 'red',
+                    dx: -(Math.random() * 3 + 1),
+                    color: 'red',  //enemy color
                     update() {
                         this.advance();
                         if (this.x + this.width < 0) {
-                            this.ttl =0;
+                            this.ttl = 0;
                         }
                     },
-                        render() {
-                            this.context.fillStyle = this.color;
-                            this.context.fillRect(this.x, this.y, this.width, this.height);
-                        }
-                    });
-                let enemies = [];         // Prepare an enemy list
-                let loop = kontra.GameLoop({
+                    render() {
+                        this.context.fillStyle = this.color;
+                        this.context.fillRect(this.x, this.y, this.width, this.height);
+                    }
+                });
+                let enemies = [];       //          preparing an enemy list
+                let loop = kontra.GameLoop({    // Game logic
                     update() {
                         player.update();
-                        enemies.forEach(e => e.update());   //update all enemies
-                        enemies = enemies.filter(e => e.isAlive());  //remove dead enemies
+                        enemies.forEach(e => e.update());
+                        enemies = enemies.filter(e => e.isAlive());  // remove dead enemies
                     },
                     render() {
                         background.render();
                         player.render();
-                        enemies.forEach(e => e.render());  //render all enemies
+                        enemies.forEach(e => e.render());    //render all enemies
                     }
                 });
                 loop.start();

@@ -13,7 +13,7 @@
         </style>
     </head>
     <body>
-    <canvas id="game" width="800" height="600"></canvas>
+        <canvas id="game" width="800" height="600"></canvas>
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
@@ -27,8 +27,7 @@
                     width: canvas.width,
                     height: canvas.height,
                     render() {
-                        this.context.drawImage
-                        (this.image, this.x, this.y, canvas.width, canvas.height);
+                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
                 let player = Sprite({
@@ -38,10 +37,10 @@
                     height: 30,
                     image: playerImage,
                     update() {
-                        if (keyPressed('arrowleft')) this.x -= 4;
-                        if (keyPressed('arrowright')) this.x += 4;
-                        if (keyPressed('arrowup')) this.y -= 4;
-                        if (keyPressed('arrowdown')) this.y += 4;
+                        if (keyPressed('arrowleft')) this.x -= 2;
+                        if (keyPressed('arrowright')) this.x += 2;
+                        if (keyPressed('arrowup')) this.y -= 2;
+                        if (keyPressed('arrowdown')) this.y += 2;
                     },
                 });
                 let enemy = Sprite({
@@ -49,12 +48,12 @@
                     y: Math.random() * (canvas.height - 30),
                     width: 60,
                     height: 30,
-                    dx: -(Math.random() * 3+1),      //move speed between -1 and -4
-                    color: 'red',
+                    dx: -(Math.random() * 3 + 1),
+                    color: 'red',  //enemy color
                     update() {
                         this.advance();
                         if (this.x + this.width < 0) {
-                            this.ttl =0;  //remove the sprite when offscreen
+                            this.ttl = 0;
                         }
                     },
                     render() {
@@ -62,7 +61,7 @@
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                     }
                 });
-                let loop = kontra.GameLoop({
+                let loop = kontra.GameLoop({    // Game logic
                     update() {
                         player.update();
                         enemy.update();

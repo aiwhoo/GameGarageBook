@@ -27,8 +27,7 @@
                     width: canvas.width,
                     height: canvas.height,
                     render() {
-                        this.context.drawImage
-                        (this.image, this.x, this.y, canvas.width, canvas.height);
+                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
                 let player = Sprite({
@@ -38,10 +37,10 @@
                     height: 30,
                     image: playerImage,
                     update() {
-                        if (keyPressed('arrowleft')) this.x -= 4;
-                        if (keyPressed('arrowright')) this.x += 4;
-                        if (keyPressed('arrowup')) this.y -= 4;
-                        if (keyPressed('arrowdown')) this.y += 4;
+                        if (keyPressed('arrowleft')) this.x -= 2;
+                        if (keyPressed('arrowright')) this.x += 2;
+                        if (keyPressed('arrowup')) this.y -= 2;
+                        if (keyPressed('arrowdown')) this.y += 2;
                     },
                 });
                 let enemy = Sprite({              // lesson 2 start, Creating one enemy rectangle
