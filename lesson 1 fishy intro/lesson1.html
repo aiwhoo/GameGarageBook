@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lesson 1 – Fishy Intro (Kontra.js)</title>
+        <style>
+            body {
+                font-family: "Segoe UI", Roboto, sans-serif;
+                background: #f5faff;
+                color: #222;
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+            }
+            header {
+                background: #0077b6;
+                color: white;
+                padding: 1.5rem;
+                text-align: center;
+            }
+            main {
+                max-width: 900px;
+                margin: auto;
+                padding: 2rem;
+            }
+            h1, h2, h3 {
+                color: #023e8a;
+            }
+            section {
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 0 6px rgba(0,0,0,0.1);
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            code, pre {
+                background: #f0f4f8;
+                padding: 0.4rem 0.6rem;
+                border-radius: 5px;
+                font-family: monospace;
+            }
+            a {
+                color: #0077b6;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            .step-link {
+                display: inline-block;
+                margin-top: 0.5rem;
+                background: #0096c7;
+                color: white;
+                padding: 0.5rem 0.8rem;
+                border-radius: 6px;
+            }
+            .step-link:hover {
+                background: #0077b6;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Lesson 1: Fishy Intro 🐠</h1>
+            <p>Using HTML, Canvas, and Kontra.js to move a sprite and add images.</p>
+        </header>
+
+        <main>
+            <section>
+                <h2>🎯 Goal</h2>
+                <p>By the end of this lesson, you’ll move a fish sprite with the arrow keys, switch from a rectangle to an image sprite, and add a background!</p>
+                <p><strong>Target:</strong> 6th graders (no coding experience)</p>
+                <p><strong>Tech:</strong> HTML + Kontra.js</p>
+                <img width="100%" src="screenshots/image9_lesson1_outcome.png"> </img>
+            </section>
+
+            <section>
+                <h2>Step 1: HTML + Canvas + Kontra Setup</h2>
+                <p>HTML is the language that builds websites. It uses <code>&lt;tags&gt;</code> to organize what you see.</p>
+                <p>Tags like <code>&lt;body&gt;</code> and <code>&lt;canvas&gt;</code> mark sections of your page. The canvas is your game’s stage.</p>
+                <p>In this step, you’ll set up your HTML structure and a blank blue canvas using CSS.</p>
+                <a href="step1_project_template.html" class="step-link" target="_blank">👉 View Step 1 Code</a>
+                <img width="100%" src="screenshots/image8_project_template.png"> </img>
+            </section>
+
+            <section>
+                <h2>Step 2: Kontra Setup</h2>
+                <p>Add Kontra.js to your project and connect it to your canvas:</p>
+                <pre><code>&lt;script src="https://unpkg.com/kontra/kontra.min.js"&gt;&lt;/script&gt;
+kontra.init('game');
+</code></pre>
+                <p>Now you’re ready to create game objects, sprites, and loops!</p>
+                <a href="step2_kontra_setup.html" class="step-link" target="_blank">👉 View Step 2 Code</a>
+                <img width="100%" src="screenshots/image3_project_setup.png"> </img>
+            </section>
+
+            <section>
+                <h2>Step 3: Create a Rectangle Sprite</h2>
+                <p>Use Kontra’s <code>Sprite({...})</code> to create a simple player — a rectangle that can later become a fish!</p>
+                <p><strong>Key ideas:</strong></p>
+                <ul>
+                    <li><code>update()</code> runs every frame to update position.</li>
+                    <li><code>render()</code> draws the sprite.</li>
+                    <li><code>fillRect()</code> draws a rectangle using x, y, width, and height.</li>
+                </ul>
+                <a href="step3_player_sprite.html" class="step-link" target="_blank">👉 View Step 3 Code</a>
+                <img width="100%" src="screenshots/image1_player_sprite.png"> </img>
+
+            </section>
+
+            <section>
+                <h2>Step 4: Game Loop</h2>
+                <p>The <code>kontra.GameLoop({...})</code> keeps your game running, updating and redrawing the screen ~60 times per second.</p>
+                <p>Call <code>loop.start()</code> to begin the animation.</p>
+                <a href="step4_gameloop.html" class="step-link" target="_blank">👉 View Step 4 Code</a>
+                <img width="100%" src="screenshots/image4_gameloop_setup.png"> </img>
+
+            </section>
+
+            <section>
+                <h2>Step 5: Arrow Key Movement</h2>
+                <p>Now we add <code>initKeys()</code> so Kontra listens for keyboard input.</p>
+                <p>Use <code>keyPressed('arrowright')</code> or <code>keyPressed('arrowleft')</code> to move the player.</p>
+                <p><em>Try changing movement speed from <code>2</code> to <code>10</code> — what happens?</em></p>
+                <a href="step5_arrowkeymovement.html" class="step-link" target="_blank">👉 View Step 5 Code</a>
+            </section>
+
+            <section>
+                <h2>Step 6: Swap Rectangle with Images</h2>
+                <h3>1️⃣ Load Images</h3>
+                <p>Use <code>kontra.load()</code> to load your background and player images before the game starts.</p>
+
+                <h3>2️⃣ Add a Background Sprite</h3>
+                <p>Create a sprite for your background (like the ocean).</p>
+
+                <h3>3️⃣ Replace Rectangle with Image Sprite</h3>
+                <p>Now, use your <code>player.png</code> as the sprite image.</p>
+
+                <h3>4️⃣ Update Render Order</h3>
+                <p>Draw the background first, then the player image on top.</p>
+
+                <p>🎉 Your fish should now appear swimming over the ocean background!</p>
+                <a href="step6_loadimages.html" class="step-link" target="_blank">👉 View Step 6.1 Code</a>
+                <a href="step7_backgroundimage.html" class="step-link" target="_blank">👉 View Step 6.2 Code</a>
+                <a href="step8_playerimage.html" class="step-link" target="_blank">👉 View Step 6.3 Code</a>
+                <a href="step9_renderupdate.html" class="step-link" target="_blank">👉 View Step 6.4 Code</a>
+            </section>
+
+            <section>
+                <h2>🏁 Final Result</h2>
+                <p>Your game now shows a fish image that moves across an ocean background using the arrow keys!</p>
+                <p>You’ve learned how to:</p>
+                <ul>
+                    <li>Set up HTML + Canvas</li>
+                    <li>Use Kontra.js</li>
+                    <li>Create and move a sprite</li>
+                    <li>Load and render images</li>
+                </ul>
+            </section>
+        </main>
+    </body>
+</html>
