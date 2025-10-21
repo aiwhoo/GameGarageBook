@@ -18,32 +18,37 @@
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
             initKeys();
-            load('background.png', 'player.png').then(images => {     // load images
+            load('background.png', 'player.png').then(images => {
                 let [backgroundImage, playerImage] = images;
-                let player = Sprite({
+                let background = Sprite({
+                    x: 0,
+                    y: 0,
+                    image: backgroundImage,
+                    width: canvas.width,
+                    height: canvas.height,
+                    render() {
+                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
+                    }
+                });
+                let player = Sprite({               // Now we will update the player
                     x: 100,
                     y: 100,
                     width: 40,
                     height: 30,
-                    color: 'orange',
+                    image: playerImage,
                     update() {
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
                         if (keyPressed('arrowup')) this.y -= 2;
                         if (keyPressed('arrowdown')) this.y += 2;
                     },
-                    render() {
-                        this.context.fillStyle = this.color;
-                        this.context.fillRect(this.x, this.y, this.width, this.height)
-                    }
                 });
                 let loop = kontra.GameLoop({
                     update() {
                         player.update();
                     },
                     render() {
-                        background.render();  //draw ocean first
-                        player.render();      // then draw fish
+                        player.render();
                     }
                 });
                 loop.start();

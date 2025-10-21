@@ -18,24 +18,14 @@
             let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
             let {canvas, context} = init('game');
             initKeys();
-            load('background.png', 'player.png').then(images => {
+            load('background.png', 'player.png').then(images => {     // load images
                 let [backgroundImage, playerImage] = images;
-                let background = Sprite({
-                    x: 0,
-                    y: 0,
-                    image: backgroundImage,
-                    width: canvas.width,
-                    height: canvas.height,
-                    render() {
-                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
-                    }
-                });
-                let player = Sprite({               // Now we will update the player
+                let player = Sprite({
                     x: 100,
                     y: 100,
                     width: 40,
                     height: 30,
-                    image: playerImage,
+                    color: 'orange',
                     update() {
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
@@ -52,8 +42,7 @@
                         player.update();
                     },
                     render() {
-                        background.render();
-                        player.render();
+                        player.render();      // then draw fish
                     }
                 });
                 loop.start();
