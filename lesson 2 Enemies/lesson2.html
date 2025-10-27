@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Lesson 2 – Enemy Fish & Collision Detection (Kontra.js)</title>
+        <style>
+            body {
+                font-family: "Segoe UI", Roboto, sans-serif;
+                background: #f5faff;
+                color: #222;
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                background: #0077b6;
+                color: white;
+                padding: 1.5rem;
+                text-align: center;
+            }
+
+            main {
+                max-width: 900px;
+                margin: auto;
+                padding: 2rem;
+            }
+
+            h1, h2, h3 {
+                color: #023e8a;
+            }
+
+            section {
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            code, pre {
+                background: #f0f4f8;
+                padding: 0.4rem 0.6rem;
+                border-radius: 5px;
+                font-family: monospace;
+            }
+
+            a {
+                color: #0077b6;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .step-link {
+                display: inline-block;
+                margin-top: 0.5rem;
+                background: #0096c7;
+                color: white;
+                padding: 0.5rem 0.8rem;
+                border-radius: 6px;
+            }
+
+            .step-link:hover {
+                background: #0077b6;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Lesson 2: Enemies 🐡</h1>
+            <p>Using Kontra.js to create enemies, spawn them, and detect collisions.</p>
+        </header>
+
+        <main>
+
+            <section>
+                <h2>🎯 Goal</h2>
+                <p>By the end of this lesson, you’ll be able to:</p>
+                <ul>
+                    <li>Create enemy sprites that move across the screen.</li>
+                    <li>Spawn multiple enemies at random speeds and positions.</li>
+                    <li>Detect collisions between the player and enemies.</li>
+                </ul>
+                <p><strong>Target:</strong> 6th graders (no coding experience)</p>
+                <p><strong>Tech:</strong> HTML + Kontra.js</p>
+                <img width="100%" src="screenshots/image12_finalimage.png" alt="Lesson 2 outcome preview">
+            </section>
+            <section>
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                    <iframe
+                            src="https://drive.google.com/file/d/1dfYqp1ynl4PvkPNdYYp_8uqmUx7mcBJE/view?usp=drive_link"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            allow="autoplay">
+
+                    </iframe>
+                </div>
+            </section>
+            <section>
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                    <iframe
+                            src="https://drive.google.com/file/d/14f3l0Z08Baxoc8kwvveHHd4SWeptGUTn/view?usp=drive_link"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            allow="autoplay">
+
+                    </iframe>
+                </div>
+            </section>
+
+            <section>
+                <h2>Step 1: Create One Enemy Rectangle</h2>
+                <p>We’ll start with just one enemy fish — a red rectangle that moves across the screen.</p>
+                <h3>✅ Code Reference</h3>
+                <p>Add this code after your arrow key movement:</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step1_enemysprite.html
+                   class="step-link" target="_blank">👉 View Step 1 Code</a>
+                <img width="100%" src="screenshots/image1_oneenemy.png" alt="Enemy rectangle example">
+
+                <p>This red rectangle acts as the bad fish. It starts on the right side (x: 800) and slowly moves left
+                    because of <code>dx: -2</code>. The <code>update()</code> function keeps it moving, and <code>render()</code>
+                    draws it.</p>
+                <img width="100%" src="screenshots/image3_rectangleenemy.png" alt="Enemy rectangle example">
+            </section>
+
+            <section>
+                <h2>Step 2: Make Enemy Speed Random</h2>
+                <p>“We don’t want every enemy to move the same way. Let’s use random numbers to make them
+                    different.”</p>
+                <p>Use <code>Math.random()</code> to give each enemy a random height and speed.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step2_enemyspeed.html
+                   class="step-link" target="_blank">👉 View Step 2 Code</a>
+                <img width="100%" src="screenshots/image4_enemyspeed.png" alt="Random speed example">
+            </section>
+
+            <section>
+                <h2>Step 3: Remove Enemy When Offscreen</h2>
+                <p>We don’t want enemies to exist forever. When they leave the screen, we clean them up.</p>
+                <p>Add this inside the enemy’s <code>update()</code> function:</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step3_removeenemywhenoffscreen.html
+                   class="step-link" target="_blank">👉 View Step 3 Code</a>
+                <p>We use <code>ttl = 0</code> (time-to-live) to delete enemies that have moved off-screen. This keeps
+                    the game running smoothly and avoids memory buildup.</p>
+                <img width="100%" src="screenshots/image5_removeenemy.png" alt="Enemy offscreen cleanup">
+            </section>
+
+            <section>
+                <h2>Step 4: Prepare an Enemy List (Array)</h2>
+                <p>We want multiple enemies! Create a list to track them all:</p>
+                <pre><code>let enemies = [];</code></pre>
+                <p>Update your game loop’s <code>update()</code> and <code>render()</code> to handle all enemies in this
+                    list.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step4_enemyarmy.html
+                   class="step-link" target="_blank">👉 View Step 4 Code</a>
+                <img width="100%" src="screenshots/image6_enemyarmy.png" alt="Enemy list array">
+            </section>
+
+            <section>
+                <h2>Step 5.1: Create a Spawn Timer</h2>
+                <p>We don’t want all enemies at once! Let’s use a timer to spawn new enemies every second.</p>
+                <p>Add a variable like <code>let spawnTimer = 60;</code> before your GameLoop, and count it down each
+                    frame.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step5.1_spawntimer.html
+                   class="step-link" target="_blank">👉 View Step 5.1 Code</a>
+                <img width="100%" src="screenshots/image7_spawntimer.png" alt="Spawn timer illustration">
+            </section>
+
+            <section>
+                <h2>Step 5.2: Spawning New Enemies</h2>
+                <p>Inside your <code>update()</code> function, check the timer and create a new enemy when it reaches 0.
+                </p>
+                <p>Each new enemy gets a random height and speed and is pushed into the <code>enemies</code> array.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step5.2_spawningnewenemies.html
+                   class="step-link" target="_blank">👉 View Step 5.2 Code</a>
+                <img width="100%" src="screenshots/image8_spawningnewenemies.png" alt="Spawning enemies example">
+            </section>
+
+            <section>
+                <h2>Step 6.1: Add Collision Detection</h2>
+                <p>Now let’s check if the player touches an enemy. If they collide, the enemy changes color.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step6.1_collisiondetection.html
+                   class="step-link" target="_blank">👉 View Step 6.1 Code</a>
+                <img width="100%" src="screenshots/image9_collisiondetection.png" alt="Collision diagram">
+                <img width="100%" src="screenshots/image10_visualrepresentation.png" alt="Collision diagram">
+            </section>
+
+            <section>
+                <h2>Step 6.2: Checking Collision and Changing Color</h2>
+                <p>Inside your <code>update()</code>, after spawning enemies, loop through all enemies to check
+                    collisions.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%202%20Enemies/step6.2_checkingcollisonandchangingcolor.html
+                   class="step-link" target="_blank">👉 View Step 6.2 Code</a>
+                <img width="100%" src="screenshots/image11_changingcolor.png" alt="Collision visual example">
+            </section>
+
+            <section>
+                <h2>🏁 Final Result</h2>
+                <ul>
+                    <li>You can see your player fish swimming while new red enemy fish keep appearing and moving. When
+                        they bump into each other, the enemies change color — showing your collision detection works
+                    </li>
+                </ul>
+            </section>
+
+        </main>
+    </body>
+</html>
