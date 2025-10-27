@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Fishy Game</title>
+        <script src="https://unpkg.com/kontra@10.0.2/kontra.js"></script>
+        <style>
+            canvas {
+                display: block;
+                margin: auto;
+                background-color: #88ccee;
+                border: 3px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="game" width="800" height="600"></canvas>
+        <script>
+            let {init, Sprite, GameLoop, initKeys, keyPressed, load} = kontra;
+            let {canvas, context} = init('game');
+            initKeys();
+            load('background.png', 'player.png').then(images => {
+                let [backgroundImage, playerImage] = images;
+                let background = Sprite({
+                    x: 0,
+                    y: 0,
+                    image: backgroundImage,
+                    width: canvas.width,
+                    height: canvas.height,
+                    render() {
+                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
+                    }
+                });
+                let player = Sprite({
+                    x: 100,
+                    y: 100,
+                    width: 40,
+                    height: 30,
+                    image: playerImage,
+                    update() {
+                        if (keyPressed('arrowleft')) this.x -= 2;
+                        if (keyPressed('arrowright')) this.x += 2;
+                        if (keyPressed('arrowup')) this.y -= 2;
+                        if (keyPressed('arrowdown')) this.y += 2;
+                    },
+                });
+
+                let enemies = [];       //          preparing an enemy list
+
+                function isoverlapping(min1, max1, min2, max2) {         //step 6.1: function overlapping, iscolliding      {
+                    return max1 >= min2 && max2 >= min1;
+                }
+
+                function iscolliding(sprite1, sprite2) {
+                    return (
+                        isoverlapping(sprite1.x, sprite1.x + sprite1.width, sprite2.x, sprite2.x + sprite2.width) &&
+                        isoverlapping(sprite1.y, sprite1.y + sprite1.height, sprite2.y, sprite2.y + sprite2.height)
+                    );
+                }
+
+                let spawnTimer = 60;    // 60 frames = ~1 second, step 5.1, create spawn timer.
+
+                let loop = kontra.GameLoop({    // Game logic
+                    update() {
+                        spawnTimer--;                     //Spawn first, step 5.2, spawning new enemies every second
+                        if (spawnTimer <= 0) {
+                            let newEnemy = kontra.Sprite({
+                                x: 800,
+                                y: Math.random() * (canvas.height - 30),
+                                width: 60,
+                                height: 30,
+                                dx: -(Math.random() * 3 + 1),
+                                color: 'red',
+                                update() {
+                                    this.advance();
+                                    if (this.x + this.width < 0) this.ttl = 0;
+                                },
+                                render() {
+                                    this.context.fillStyle = this.color;
+                                    this.context.fillRect(this.x, this.y, this.width, this.height);
+                                }
+                            });
+                            enemies.push(newEnemy);
+                            spawnTimer = 60;   // reset timer
+                        }
+                        player.update();
+                        enemies.forEach(e => e.update());
+                        enemies = enemies.filter(e => e.isAlive());  // remove dead enemies
+                    },
+                    render() {
+                        background.render();
+                        player.render();
+                        enemies.forEach(e => e.render());    //render all enemies
+                    }
+                });
+                loop.start();
+            });
+        </script>
+    </body>
+</html>
