@@ -15,17 +15,9 @@
     <body>
         <canvas id="game" width="800" height="600"></canvas>
         <script>
-            let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text} = kontra;  <!-- added Text here -->
+            let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text} = kontra;
             let {canvas, context} = init('game');
             initKeys();
-            let score = 0;          // 🟩 Added Score Tracking
-            let scoreText = Text({
-                text: 'Score: 0',
-                font: '20px Arial',
-                color: 'black',
-                x: 10,
-                y: 10
-            });
             load('background.png', 'player.png').then(images => {
                 let [backgroundImage, playerImage] = images;
                 let background = Sprite({
@@ -35,8 +27,7 @@
                     width: canvas.width,
                     height: canvas.height,
                     render() {
-                        this.context.drawImage
-                        (this.image, this.x, this.y, canvas.width, canvas.height);
+                        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
                 let player = Sprite({
@@ -46,51 +37,40 @@
                     height: 30,
                     image: playerImage,
                     update() {
-                        if (keyPressed('arrowleft')) this.x -= 4;
-                        if (keyPressed('arrowright')) this.x += 4;
-                        if (keyPressed('arrowup')) this.y -= 4;
-                        if (keyPressed('arrowdown')) this.y += 4;
+                        if (keyPressed('arrowleft')) this.x -= 2;
+                        if (keyPressed('arrowright')) this.x += 2;
+                        if (keyPressed('arrowup')) this.y -= 2;
+                        if (keyPressed('arrowdown')) this.y += 2;
                     },
                 });
-                let enemy = Sprite({
-                    x: 800,
-                    y: Math.random() * (canvas.height - 30),
-                    width: 60,
-                    height: 30,
-                    dx: -(Math.random() * 3+1),
-                    color: 'red',
-                    update() {
-                        this.advance();
-                        if (this.x + this.width < 0) {
-                            this.ttl =0;
-                        }
-                    },
-                    render() {
-                        this.context.fillStyle = this.color;
-                        this.context.fillRect(this.x, this.y, this.width, this.height);
-                    }
-                });
-                let enemies = [];
+
+                let enemies = []; // preparing an enemy list
+
                 function isoverlapping(min1, max1, min2, max2) {
                     return max1 >= min2 && max2 >= min1;
                 }
+
                 function iscolliding(sprite1, sprite2) {
-                    return isoverlapping(sprite1.x, sprite1.x + sprite1.width, sprite2.x, sprite2.x+ sprite2.width) &&
-                        isoverlapping(sprite1.y, sprite1.y + sprite1.height, sprite2.y, sprite2.y + sprite2.height);
+                    return (
+                        isoverlapping(sprite1.x, sprite1.x + sprite1.width, sprite2.x, sprite2.x + sprite2.width) &&
+                        isoverlapping(sprite1.y, sprite1.y + sprite1.height, sprite2.y, sprite2.y + sprite2.height)
+                    );
                 }
-                let spawnTimer = 60;
+
+                let spawnTimer = 60;           //60 frames = ~1 second
+
+                let score = 0;                 //Added score tracking
+
+                let scoreText = Text({
+                    text: 'Score: 0',
+                    font: '20px Arial',
+                    color: 'black',
+                    x: 10,
+                    y: 10
+                });
+
                 let loop = kontra.GameLoop({
                     update() {
-                        player.update();
-                        enemies.forEach(e => e.update());
-                        enemies = enemies.filter(e => e.isAlive());
-                        enemies.forEach(e => {
-                            if (iscolliding(player, e) && e.color !== 'purple') {
-                                e.color = 'purple';
-                                score++;            // 🟩 Update score when collision happens
-                                scoreText.text = 'Score: ' + score;
-                            }
-                        });
                         spawnTimer--;
                         if (spawnTimer <= 0) {
                             let newEnemy = kontra.Sprite({
@@ -98,29 +78,36 @@
                                 y: Math.random() * (canvas.height - 30),
                                 width: 60,
                                 height: 30,
-                                dx: - (Math.random() * 3 + 1),
+                                dx: -(Math.random() * 3 + 1),
                                 color: 'red',
                                 update() {
                                     this.advance();
-                                    if (this.x + this.width < 0) {
-                                        this.ttl = 0;
-                                    }
+                                    if (this.x + this.width < 0) this.ttl = 0;
                                 },
                                 render() {
                                     this.context.fillStyle = this.color;
                                     this.context.fillRect(this.x, this.y, this.width, this.height);
                                 }
                             });
-
                             enemies.push(newEnemy);
                             spawnTimer = 60;
                         }
+                        player.update();
+                        enemies.forEach(e => e.update());
+                        enemies = enemies.filter(e => e.isAlive());
+                        enemies.forEach(e => {
+                            if (iscolliding(player, e)) {
+                                e.color = 'purple';
+                            }
+                        });
+
+                        scoreText.text = 'Score: ' + score;     //Update score text
                     },
                     render() {
                         background.render();
                         player.render();
                         enemies.forEach(e => e.render());
-                        scoreText.render();   // 🟩 render score text on top
+                        scoreText.render();    //Render score text
                     }
                 });
                 loop.start();
