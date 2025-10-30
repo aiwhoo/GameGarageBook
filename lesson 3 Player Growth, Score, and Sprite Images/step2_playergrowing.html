@@ -37,7 +37,13 @@
                     height: 30,
                     image: playerImage,
                     size: 40,   //add this line so my fish can eat smaller enemies
+                    render() {
+                        this.context.fillStyle = this.color;
+                        this.context.fillRect(this.x, this.y, this.width, this.height);
+                        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+                    },
                     update() {
+                        console.log(this.x + "," + this.y);
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
                         if (keyPressed('arrowup')) this.y -= 2;
@@ -104,6 +110,8 @@
                                     e.wasEaten = true;
                                     e.color = "blue"; // Optional visual feedback
                                     player.size += 2;
+                                    player.width = player.size;
+                                    player.height = player.size;
                                     score += 1;
                                 } else {
                                     console.log("That fish is too big!");  // Optional: shrink player or end gameF
