@@ -26,7 +26,7 @@
                     image: backgroundImage,
                     width: canvas.width,
                     height: canvas.height,
-                    render() {
+                    draw() {
                         this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
@@ -37,7 +37,7 @@
                     height: 30,
                     image: playerImage,
                     size: 40,   //add this line so my fish can eat smaller enemies
-                    render() {
+                    draw() {
                         this.context.fillStyle = this.color;
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                         this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -91,7 +91,7 @@
                                     this.advance();
                                     if (this.x + this.width < 0) this.ttl = 0;
                                 },
-                                render() {
+                                draw() {
                                     this.context.fillStyle = this.color;
                                     this.context.fillRect(this.x, this.y, this.width, this.height);
                                 }
@@ -122,10 +122,10 @@
                         scoreText.text = 'Score: ' + score;     //Update score text
                     },
                     render() {
-                        background.render();
-                        player.render();
-                        enemies.forEach(e => e.render());
-                        scoreText.render();    //Render score text
+                        background.draw();
+                        player.draw();
+                        enemies.forEach(e => e.draw());
+                        scoreText.draw();    //Render score text
                     }
                 });
                 loop.start();
