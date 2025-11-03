@@ -33,14 +33,13 @@
                 }
             });
             let loop = kontra.GameLoop({   //Game logic
-                update(){
+                update() {
                     player.update();
                 },
-                render(){
+                render() {
                     player.draw();
                 }
             });
-
             loop.start();
         </script>
     </body>
