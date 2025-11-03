@@ -37,17 +37,15 @@
                     height: 30,
                     image: playerImage,
                     size: 40,   //add this line so my fish can eat smaller enemies
-                    draw() {
-                        this.context.fillStyle = this.color;
-                        this.context.fillRect(this.x, this.y, this.width, this.height);
-                        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
-                    },
                     update() {
                         console.log(this.x + "," + this.y);
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
                         if (keyPressed('arrowup')) this.y -= 2;
                         if (keyPressed('arrowdown')) this.y += 2;
+                    },
+                    draw() {
+                        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
                     },
                 });
 
@@ -125,7 +123,7 @@
                         background.draw();
                         player.draw();
                         enemies.forEach(e => e.draw());
-                        scoreText.draw();    //Render score text
+                        scoreText.draw();    //draw score text
                     }
                 });
                 loop.start();

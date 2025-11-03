@@ -27,7 +27,7 @@
                 update() {
                     this.x += 2;
                 },
-                render() {
+                draw() {
                     this.context.fillStyle = this.color;
                     this.context.fillRect(this.x, this.y, this.width, this.height)
                 }
@@ -37,7 +37,7 @@
                     player.update();
                 },
                 render(){
-                    player.render();
+                    player.draw();
                 }
             });
 

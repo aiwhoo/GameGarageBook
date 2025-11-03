@@ -26,7 +26,7 @@
                     image: backgroundImage,
                     width: canvas.width,
                     height: canvas.height,
-                    render() {
+                    draw() {
                         this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
@@ -42,6 +42,9 @@
                         if (keyPressed('arrowup')) this.y -= 2;
                         if (keyPressed('arrowdown')) this.y += 2;
                     },
+                    draw() {
+                        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+                    },
                 });
                 let enemy = Sprite({
                     x: 800,
@@ -56,7 +59,7 @@
                             this.ttl = 0;
                         }
                     },
-                    render() {
+                    draw() {
                         this.context.fillStyle = this.color;
                         this.context.fillRect(this.x, this.y, this.width, this.height);
                     }
@@ -67,9 +70,9 @@
                         enemy.update();
                     },
                     render() {
-                        background.render();
-                        player.render();
-                        enemy.render();
+                        background.draw();
+                        player.draw();
+                        enemy.draw();
                     }
                 });
                 loop.start();

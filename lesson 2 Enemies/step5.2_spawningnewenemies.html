@@ -42,6 +42,9 @@
                         if (keyPressed('arrowup')) this.y -= 2;
                         if (keyPressed('arrowdown')) this.y += 2;
                     },
+                    draw() {
+                        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+                    },
                 });
 
                 let enemies = [];       //          preparing an enemy list

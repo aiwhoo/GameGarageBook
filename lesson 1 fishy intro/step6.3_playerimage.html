@@ -26,7 +26,7 @@
                     image: backgroundImage,
                     width: canvas.width,
                     height: canvas.height,
-                    render() {
+                    draw() {
                         this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
@@ -42,13 +42,16 @@
                         if (keyPressed('arrowup')) this.y -= 2;
                         if (keyPressed('arrowdown')) this.y += 2;
                     },
+                    draw() {
+                        this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+                    },
                 });
                 let loop = kontra.GameLoop({
                     update() {
                         player.update();
                     },
                     render() {
-                        player.render();
+                        player.draw();
                     }
                 });
                 loop.start();
