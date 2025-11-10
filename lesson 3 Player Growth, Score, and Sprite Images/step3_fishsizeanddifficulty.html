@@ -14,12 +14,18 @@
     </head>
     <body>
         <canvas id="game" width="800" height="600"></canvas>
+
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text} = kontra;
             let {canvas, context} = init('game');
+
             initKeys();
+
+            // load assets
             load('background.png', 'player.png').then(images => {
+
                 let [backgroundImage, playerImage] = images;
+
                 let background = Sprite({
                     x: 0,
                     y: 0,
@@ -30,15 +36,15 @@
                         this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
+
                 let player = Sprite({
                     x: 100,
                     y: 100,
                     width: 40,
                     height: 30,
                     image: playerImage,
-                    size: 20,              //add this line so my fish can eat smaller enemies
+                    size: 20,        // this controls growth size
                     update() {
-                        console.log(this.x + "," + this.y);
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
                         if (keyPressed('arrowup')) this.y -= 2;
@@ -46,10 +52,10 @@
                     },
                     draw() {
                         this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
-                    },
+                    }
                 });
 
-                let enemies = []; // preparing an enemy list
+                let enemies = [];
 
                 function isoverlapping(min1, max1, min2, max2) {
                     return max1 >= min2 && max2 >= min1;
@@ -62,9 +68,8 @@
                     );
                 }
 
-                let spawnTimer = 60; // 60 frames = ~1 second
-
-                let score = 0;    //Added score tracking
+                let spawnTimer = 60;
+                let score = 0;
 
                 let scoreText = Text({
                     text: 'Score: 0',
@@ -74,16 +79,20 @@
                     y: 10
                 });
 
-                let loop = kontra.GameLoop({
+                let loop = GameLoop({
                     update() {
+
                         spawnTimer--;
                         if (spawnTimer <= 0) {
-                            let newEnemy = kontra.Sprite({
-                                x: 800,
-                                y: Math.random() * (canvas.height - 30),
-                                width: Math.random() * 50 + 10,
-                                height: Math.random() * 30 + 10,
-                                dx: -(Math.random() * 3 + 1),
+
+                            let size = Math.random() * 20 + 10; // enemy size between 10–30,RANDOMIZED FISH SIZE
+
+                            let newEnemy = Sprite({
+                                x: canvas.width,
+                                y: Math.random() * (canvas.height - size),
+                                width: size,
+                                height: size,
+                                dx: -(Math.random() * 2 + 1),
                                 color: 'red',
                                 update() {
                                     this.advance();
@@ -103,32 +112,34 @@
                         enemies = enemies.filter(e => e.isAlive());
 
                         enemies.forEach(e => {
+                            if (iscolliding(player, e) && !e.wasEaten) {
 
-                            if (iscolliding(player, e) && !e.wasEaten) {               //Updated collision logic
-                                if (e.width * e.height < player.size * player.size) {
+                                if (e.width * e.height < player.size * player.size)      //Player eats fish only if smaller
                                     e.wasEaten = true;
-                                    e.color = "blue";     // Optional visual feedback
+                                    e.color = "blue";
                                     player.size += 2;
                                     player.width = player.size;
                                     player.height = player.size;
                                     score += 1;
                                 } else {
-                                    console.log("That fish is too big!");       // Optional: shrink player or end game
+                                    console.log("Too BIG! Avoid this fish.");
                                 }
-                            }
-                        });
+                            })
 
-                        scoreText.text = 'Score: ' + score;     //Update score text
+                        scoreText.text = "Score: " + score;
                     },
+
                     render() {
                         background.draw();
                         player.draw();
                         enemies.forEach(e => e.draw());
-                        scoreText.draw();    //draw score text
+                        scoreText.draw();
                     }
                 });
+
                 loop.start();
             });
         </script>
     </body>
 </html>
+
