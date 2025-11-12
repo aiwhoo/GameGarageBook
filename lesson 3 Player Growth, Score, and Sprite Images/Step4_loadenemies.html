@@ -14,18 +14,15 @@
     </head>
     <body>
         <canvas id="game" width="800" height="600"></canvas>
-
         <script>
-            let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text, assets} = kontra;
+            let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text,} = kontra;
             let {canvas, context} = init('game');
-
             initKeys();
 
-            kontra.load('background.png', 'player.png', 'enemysmall.png', 'enemybig.png').then(images => {     //Load ALL images at once
+            kontra.load('background.png', 'player.png', 'enemy.png').then(images => {          //loading images
+                let [backgroundImage, playerImage, enemyImage] = images;
 
-                let [backgroundImage, playerImage, enemySmallImage, enemyBigImage] = images;
-
-                let background = Sprite({         //Background sprite
+                let background = Sprite({     //background sprite
                     x: 0,
                     y: 0,
                     image: backgroundImage,
@@ -36,7 +33,7 @@
                     }
                 });
 
-                let player = Sprite({       //Player sprite
+                let player = Sprite({         //player/fish sprite
                     x: 100,
                     y: 100,
                     width: 40,
@@ -51,7 +48,7 @@
                     },
                     draw() {
                         this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
-                    }
+                    },
                 });
 
                 let enemies = [];
@@ -67,11 +64,11 @@
                     );
                 }
 
-                function createFish() {          //CREATE FISH USING IMAGES (instead of rectangles)   {
-                    let size = Math.random() * 20 + 10;
-                    let enemyImage = size < 25 ? enemySmallImage : enemyBigImage;
+                function createFish() {               // createFish
 
-                    return Sprite({
+                    let size = Math.random() * 25 + 15;  // random enemy size
+
+                    return kontra.Sprite({
                         x: canvas.width,
                         y: Math.random() * (canvas.height - size),
                         width: size,
@@ -79,7 +76,6 @@
                         dx: -(Math.random() * 2 + 1),
                         image: enemyImage,
                         wasEaten: false,
-
                         update() {
                             this.advance();
                             if (this.x + this.width < 0) this.ttl = 0;
@@ -87,15 +83,12 @@
                             if (iscolliding(player, this) && !this.wasEaten) {
                                 if (this.width * this.height < player.size * player.size) {
                                     this.wasEaten = true;
-                                    player.size += 2;
-                                    player.width = player.size;
-                                    player.height = player.size;
-                                    score += 1;
                                     this.ttl = 0;
+                                    player.size += 2;
+                                    score += 1;
                                 }
                             }
                         },
-
                         draw() {
                             this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
                         }
@@ -113,12 +106,12 @@
                     y: 10
                 });
 
-                let loop = GameLoop({
+                let loop = kontra.GameLoop({
                     update() {
 
-                        spawnTimer--;
+                        spawnTimer--;                //REPLACED your old enemy spawn
                         if (spawnTimer <= 0) {
-                            enemies.push(createFish());   //now spawns IMAGE ENEMIES
+                            enemies.push(createFish());
                             spawnTimer = 60;
                         }
 
@@ -126,14 +119,13 @@
                         enemies.forEach(e => e.update());
                         enemies = enemies.filter(e => e.isAlive());
 
-                        scoreText.text = "Score: " + score;
+                        scoreText.text = 'Score: ' + score;
                     },
-
                     render() {
                         background.draw();
                         player.draw();
                         enemies.forEach(e => e.draw());
-                        scoreText.draw();
+                        scoreText.render();
                     }
                 });
 

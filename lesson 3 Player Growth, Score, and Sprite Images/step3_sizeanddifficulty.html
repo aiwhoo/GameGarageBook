@@ -14,18 +14,12 @@
     </head>
     <body>
         <canvas id="game" width="800" height="600"></canvas>
-
         <script>
             let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text} = kontra;
             let {canvas, context} = init('game');
-
             initKeys();
-
-            // load assets
             load('background.png', 'player.png').then(images => {
-
                 let [backgroundImage, playerImage] = images;
-
                 let background = Sprite({
                     x: 0,
                     y: 0,
@@ -43,7 +37,7 @@
                     width: 40,
                     height: 30,
                     image: playerImage,
-                    size: 20,        // this controls growth size
+                    size: 20,
                     update() {
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
@@ -52,7 +46,7 @@
                     },
                     draw() {
                         this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
-                    }
+                    },
                 });
 
                 let enemies = [];
@@ -79,15 +73,14 @@
                     y: 10
                 });
 
-                let loop = GameLoop({
+                let loop = kontra.GameLoop({
                     update() {
-
                         spawnTimer--;
                         if (spawnTimer <= 0) {
 
-                            let size = Math.random() * 20 + 10; // enemy size between 10–30,RANDOMIZED FISH SIZE
+                            let size = Math.random() * 25 + 15; // range 10-30, RANDOM ENEMY SIZE + DIFFICULTY
 
-                            let newEnemy = Sprite({
+                            let newEnemy = kontra.Sprite({
                                 x: canvas.width,
                                 y: Math.random() * (canvas.height - size),
                                 width: size,
@@ -103,6 +96,7 @@
                                     this.context.fillRect(this.x, this.y, this.width, this.height);
                                 }
                             });
+
                             enemies.push(newEnemy);
                             spawnTimer = 60;
                         }
@@ -113,8 +107,7 @@
 
                         enemies.forEach(e => {
                             if (iscolliding(player, e) && !e.wasEaten) {
-
-                                if (e.width * e.height < player.size * player.size)      //Player eats fish only if smaller
+                                if (e.width * e.height < player.size * player.size) {
                                     e.wasEaten = true;
                                     e.color = "blue";
                                     player.size += 2;
@@ -122,18 +115,18 @@
                                     player.height = player.size;
                                     score += 1;
                                 } else {
-                                    console.log("Too BIG! Avoid this fish.");
+                                    console.log("That fish is too big!");
                                 }
-                            })
+                            }
+                        });
 
-                        scoreText.text = "Score: " + score;
+                        scoreText.text = 'Score: ' + score;
                     },
-
                     render() {
                         background.draw();
                         player.draw();
                         enemies.forEach(e => e.draw());
-                        scoreText.draw();
+                        scoreText.render();
                     }
                 });
 
@@ -142,4 +135,3 @@
         </script>
     </body>
 </html>
-

@@ -81,8 +81,8 @@
                             let newEnemy = kontra.Sprite({
                                 x: 800,
                                 y: Math.random() * (canvas.height - 30),
-                                width: Math.random() * 50 + 10,
-                                height: Math.random() * 30 + 10,
+                                width: 60,
+                                height: 30,
                                 dx: -(Math.random() * 3 + 1),
                                 color: 'red',
                                 update() {
@@ -103,8 +103,7 @@
                         enemies = enemies.filter(e => e.isAlive());
 
                         enemies.forEach(e => {
-
-                            if (iscolliding(player, e) && !e.wasEaten) {               //Updated collision logic
+                            if (iscolliding(player, e) && !e.wasEaten) {             //collision logic
                                 if (e.width * e.height < player.size * player.size) {
                                     e.wasEaten = true;
                                     e.color = "blue";     // Optional visual feedback
@@ -124,7 +123,7 @@
                         background.draw();
                         player.draw();
                         enemies.forEach(e => e.draw());
-                        scoreText.draw();    //draw score text
+                        scoreText.render();    //draw score text
                     }
                 });
                 loop.start();
