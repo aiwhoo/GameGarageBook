@@ -73,6 +73,7 @@
                         y: Math.random() * (canvas.height - size),
                         width: size,
                         height: size,
+                        size: size,
                         dx: -(Math.random() * 2 + 1),
                         image: enemyImage,
                         wasEaten: false,
@@ -81,7 +82,7 @@
                             if (this.x + this.width < 0) this.ttl = 0;
 
                             if (iscolliding(player, this) && !this.wasEaten) {
-                                if (this.width * this.height < player.size * player.size) {
+                                if (this.size < player.size) {
                                     this.wasEaten = true;
                                     this.ttl = 0;
                                     player.size += 2;

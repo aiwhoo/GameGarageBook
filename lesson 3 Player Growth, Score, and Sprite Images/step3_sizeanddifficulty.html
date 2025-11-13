@@ -85,6 +85,7 @@
                                 y: Math.random() * (canvas.height - size),
                                 width: size,
                                 height: size,
+                                size: size,
                                 dx: -(Math.random() * 2 + 1),
                                 color: 'red',
                                 update() {
@@ -107,7 +108,7 @@
 
                         enemies.forEach(e => {
                             if (iscolliding(player, e) && !e.wasEaten) {
-                                if (e.width * e.height < player.size * player.size) {
+                                if (e.size < player.size) {
                                     e.wasEaten = true;
                                     e.color = "blue";
                                     player.size += 2;
