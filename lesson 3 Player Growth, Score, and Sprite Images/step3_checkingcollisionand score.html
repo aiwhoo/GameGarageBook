@@ -37,7 +37,7 @@
                     width: 40,
                     height: 30,
                     image: playerImage,
-                    size: 20,
+                    size: 20,   //add this line so the fish can eat smaller enemies.
                     update() {
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
@@ -78,7 +78,7 @@
                         spawnTimer--;
                         if (spawnTimer <= 0) {
 
-                            let size = Math.random() * 25 + 15; // range 10-30, RANDOM ENEMY SIZE + DIFFICULTY
+                            let size = Math.random() * 25 + 15;
 
                             let newEnemy = kontra.Sprite({
                                 x: canvas.width,
@@ -88,6 +88,7 @@
                                 size: size,
                                 dx: -(Math.random() * 2 + 1),
                                 color: 'red',
+                                wasEaten: false,
                                 update() {
                                     this.advance();
                                     if (this.x + this.width < 0) this.ttl = 0;
@@ -106,7 +107,7 @@
                         enemies.forEach(e => e.update());
                         enemies = enemies.filter(e => e.isAlive());
 
-                        enemies.forEach(e => {
+                        enemies.forEach(e => {       //updated collision logic
                             if (iscolliding(player, e) && !e.wasEaten) {
                                 if (e.size < player.size) {
                                     e.wasEaten = true;

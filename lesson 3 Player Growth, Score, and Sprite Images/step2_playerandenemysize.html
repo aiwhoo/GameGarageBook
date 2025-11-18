@@ -18,9 +18,8 @@
             let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text} = kontra;
             let {canvas, context} = init('game');
             initKeys();
-            load('background.png', 'player.png', 'enemy.png').then(images => {
-                let [backgroundImage, playerImage, enemyImage] = images;
-
+            load('background.png', 'player.png').then(images => {
+                let [backgroundImage, playerImage] = images;
                 let background = Sprite({
                     x: 0,
                     y: 0,
@@ -31,15 +30,15 @@
                         this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
                     }
                 });
-
                 let player = Sprite({
                     x: 100,
                     y: 100,
                     width: 40,
                     height: 30,
                     image: playerImage,
-                    size: 20,   //add this line so the fish can eat smaller enemies.
+                    size: 20,           //adding this line so my fish can eat smaller enemies
                     update() {
+                        console.log(this.x + "," + this.y);
                         if (keyPressed('arrowleft')) this.x -= 2;
                         if (keyPressed('arrowright')) this.x += 2;
                         if (keyPressed('arrowup')) this.y -= 2;
@@ -50,7 +49,7 @@
                     },
                 });
 
-                let enemies = [];
+                let enemies = []; // preparing an enemy list
 
                 function isoverlapping(min1, max1, min2, max2) {
                     return max1 >= min2 && max2 >= min1;
@@ -63,8 +62,9 @@
                     );
                 }
 
-                let spawnTimer = 60;
-                let score = 0;
+                let spawnTimer = 60; // 60 frames = ~1 second
+
+                let score = 0;    //Added score tracking
 
                 let scoreText = Text({
                     text: 'Score: 0',
@@ -79,26 +79,26 @@
                         spawnTimer--;
                         if (spawnTimer <= 0) {
 
-                            let size = Math.random() * 25 + 15;
+                            let size = Math.random() * 25 + 15;       //RANDOM ENEMY SIZE
 
                             let newEnemy = kontra.Sprite({
-                                x: canvas.width,
-                                y: Math.random() * (canvas.height - size),
+                                x: 800,
+                                y: Math.random() * (canvas.height - 30),
                                 width: size,
                                 height: size,
                                 size: size,
-                                dx: -(Math.random() * 2 + 1),
-                                image: enemyImage,
-                                wasEaten: false,
+                                wasEaten: false,    //adding this to track enemy status
+                                dx: -(Math.random() * 3 + 1),
+                                color: 'red',
                                 update() {
                                     this.advance();
                                     if (this.x + this.width < 0) this.ttl = 0;
                                 },
                                 draw() {
-                                    this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+                                    this.context.fillStyle = this.color;
+                                    this.context.fillRect(this.x, this.y, this.width, this.height);
                                 }
                             });
-
                             enemies.push(newEnemy);
                             spawnTimer = 60;
                         }
@@ -106,31 +106,21 @@
                         player.update();
                         enemies.forEach(e => e.update());
                         enemies = enemies.filter(e => e.isAlive());
-
-                        enemies.forEach(e => {       //updated collision logic
-                            if (iscolliding(player, e) && !e.wasEaten) {
-                                if (e.size < player.size) {
-                                    e.wasEaten = true;
-                                    player.size += 2;
-                                    player.width = player.size;
-                                    player.height = player.size;
-                                    score += 1;
-                                } else {
-                                    console.log("That fish is too big!");
-                                }
+                        enemies.forEach(e => {
+                            if (iscolliding(player, e)) {
+                                e.color = 'purple';
                             }
                         });
 
-                        scoreText.text = 'Score: ' + score;
+                        scoreText.text = 'Score: ' + score;     //Update score text
                     },
                     render() {
                         background.draw();
                         player.draw();
                         enemies.forEach(e => e.draw());
-                        scoreText.render();
+                        scoreText.render();    //draw score text
                     }
                 });
-
                 loop.start();
             });
         </script>
