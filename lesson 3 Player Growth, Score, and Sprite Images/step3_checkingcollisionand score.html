@@ -88,7 +88,6 @@
                                 size: size,
                                 dx: -(Math.random() * 2 + 1),
                                 color: 'red',
-                                wasEaten: false,
                                 update() {
                                     this.advance();
                                     if (this.x + this.width < 0) this.ttl = 0;
@@ -108,10 +107,9 @@
                         enemies = enemies.filter(e => e.isAlive());
 
                         enemies.forEach(e => {       //updated collision logic
-                            if (iscolliding(player, e) && !e.wasEaten) {
+                            if (iscolliding(player, e)) {
                                 if (e.size < player.size) {
-                                    e.wasEaten = true;
-                                    e.color = "blue";
+                                    e.ttl = 0;
                                     player.size += 2;
                                     player.width = player.size;
                                     player.height = player.size;

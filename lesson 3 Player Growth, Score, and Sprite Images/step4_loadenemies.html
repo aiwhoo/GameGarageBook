@@ -88,14 +88,13 @@
                                 height: size,
                                 size: size,
                                 dx: -(Math.random() * 2 + 1),
-                                image: enemyImage,
-                                wasEaten: false,
+                                image: enemyImage,    //update the enemy image sprite based on the enemyImage
                                 update() {
                                     this.advance();
                                     if (this.x + this.width < 0) this.ttl = 0;
                                 },
                                 draw() {
-                                    this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+                                    this.context.drawImage(this.image, this.x, this.y, this.width, this.height); //Draw the enemy using its image sprite
                                 }
                             });
 
@@ -108,9 +107,9 @@
                         enemies = enemies.filter(e => e.isAlive());
 
                         enemies.forEach(e => {       //updated collision logic
-                            if (iscolliding(player, e) && !e.wasEaten) {
+                            if (iscolliding(player, e)) {
                                 if (e.size < player.size) {
-                                    e.wasEaten = true;
+                                    e.ttl = 0;
                                     player.size += 2;
                                     player.width = player.size;
                                     player.height = player.size;
