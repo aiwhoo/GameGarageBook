@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Lesson 3 – Player Growth, Score & Sprite Images (Kontra.js)</title>
+
+        <style>
+            body {
+                font-family: "Segoe UI", Roboto, sans-serif;
+                background: #f5faff;
+                color: #222;
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                background: #0077b6;
+                color: white;
+                padding: 1.5rem;
+                text-align: center;
+            }
+
+            main {
+                max-width: 900px;
+                margin: auto;
+                padding: 2rem;
+            }
+
+            h1, h2, h3 {
+                color: #023e8a;
+            }
+
+            section {
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            code, pre {
+                background: #f0f4f8;
+                padding: 0.4rem 0.6rem;
+                border-radius: 5px;
+                font-family: monospace;
+            }
+
+            a {
+                color: #0077b6;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .step-link {
+                display: inline-block;
+                margin-top: 0.5rem;
+                background: #0096c7;
+                color: white;
+                padding: 0.5rem 0.8rem;
+                border-radius: 6px;
+            }
+
+            .step-link:hover {
+                background: #0077b6;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Lesson 3: Player Growth, Score, and Sprite Images 🐠</h1>
+            <p>Upgrading our game with scoring, growth, and image-based sprites.</p>
+        </header>
+
+        <main>
+
+            <!-- OBJECTIVES -->
+            <section>
+                <h2>🎯 Objectives</h2>
+                <ul>
+                    <li>Replace rectangles with image-based sprites using <code>kontra.assets</code>.</li>
+                    <li>Increase player size when eating smaller fish.</li>
+                    <li>Track score using <code>kontra.Text</code>.</li>
+                    <li>Use size comparisons to determine which fish can be eaten.</li>
+                    <li>Understand how asset sizes affect performance in game jams.</li>
+                </ul>
+                <img width="100%" src="screenshots/image11_finalimage.png" alt="Lesson 3 preview">
+            </section>
+
+            <!-- VIDEO PLACEHOLDER -->
+            <section>
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                    <iframe
+                            src="https://drive.google.com/file/d/1s82dAqLTOekDpgHQ4JhsJulx5ctliGv8/preview"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            allow="autoplay">
+                    </iframe>
+                </div>
+            </section>
+
+            <!-- STEP 1: Score System -->
+            <section>
+                <h2>Step 1: Add Score Tracking with <code>kontra.Text</code></h2>
+
+                <p>We will now keep track of how many enemy fish the player eats.</p>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%203%20Player%20Growth%2C%20Score%2C%20and%20Sprite%20Images/step1_scoretracking.html
+                   class="step-link" target="_blank">👉 View Step 1 Code</a>
+
+                <h3>🧩 Add this globally</h3>
+                <img width="100%" src="screenshots/image1_scoresystem.png" alt="Score text code">
+
+                <p>This creates a score variable and a text object that shows the score on screen. It behaves just like
+                    a
+                    sprite, but displays text instead of an image.</p>
+
+                <h3>🔄 Update in the Game Loop (<code>update()</code>)</h3>
+                <pre><code>scoreText.text = 'Score: ' + score;</code></pre>
+                <img width="100%" src="screenshots/image2_scoreupdate.png" alt="Score update example">
+
+                <h3>🎨 Render in <code>render()</code></h3>
+                <pre><code>scoreText.render();</code></pre>
+                <img width="100%" src="screenshots/image3_scoretextrender.png" alt="Score render example">
+            </section>
+
+            <!-- STEP 2: Player Growth -->
+            <section>
+                <h2>Step 2: Player and Enemy Size and Growth</h2>
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%203%20Player%20Growth%2C%20Score%2C%20and%20Sprite%20Images/step2_playerandenemysize.html
+                   class="step-link" target="_blank">👉 View Step 2 Code</a>
+
+                <p>Now we will let the player grow whenever they successfully eat a smaller fish. This makes the game
+                    feel
+                    exciting and rewarding.</p>
+                <img width="100%" src="screenshots/image4_playersize.png" alt="Player growth diagram">
+                <p> You should only eat fish that are smaller than you. This steps give random size to every enemy</p>
+
+                <img width="100%" src="screenshots/image5_enemysize.png" alt="Player growth diagram">
+
+
+                </code></pre>
+            </section>
+
+            <!--STEP 3: Udating Collision Logic -->
+            <section>
+                <h2>Step 3: Updating Collision Logic and Checking Score</h2>
+
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%203%20Player%20Growth%2C%20Score%2C%20and%20Sprite%20Images/step3_checkingcollisionand%20score.html
+                   class="step-link" target="_blank">👉 View Step 3 Code</a>
+
+                <p>This part of the code checks every enemy fish to see if it touches the player fish. If the enemy is
+                    smaller than the player, the enemy is removed, the player grows bigger, and the score
+                    increases.</p>
+
+                <img width="100%" src="screenshots/image6_collidinglogic.png" alt="Player growth diagram">
+
+                </code></pre>
+            </section>
+
+            <!-- VIDEO PLACEHOLDER -->
+            <section>
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                    <iframe
+                            src="https://drive.google.com/file/d/13A5R0Yg9dHxcRvu_8U5uy7tsUR1bOKOx/preview"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            allow="autoplay">
+                    </iframe>
+                </div>
+            </section>
+
+            <!-- STEP 3: Load and Use Images -->
+            <section>
+                <h2>Step 4: Replace Rectangles with Sprite Image</h2>
+
+                <p>Let's make the game look more realistic by replacing rectangles with actual fish PNGs.</p>
+
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%203%20Player%20Growth%2C%20Score%2C%20and%20Sprite%20Images/step4_loadenemies.html
+                   class="step-link" target="_blank">👉 View Step 4 Code</a>
+
+                <h3>📥 Load images using <code>kontra.load</code></h3>
+                <img width="100%" src="screenshots/image7_loadenemies.png" alt="kontra load example">
+
+                <h3>🐡 Enemy Sprite Example, We will need to update both the image variable as well as the draw
+                    function</h3>
+                <img width="100%" src="screenshots/image8_enemysprite.png" alt="Enemy sprite update">
+
+                <p>Update the enemy object to include <code>image: enemyImage</code> and adjust the draw function to use
+                    the
+                    sprite image instead of a rectangle.</p>
+            </section>
+
+            <!-- STEP 4: Sound Effects -->
+            <section>
+                <h2>Step 5: Add Sound Effects</h2>
+
+                <p>We will add a bubble sound when the player eats a fish. This makes the game feel more alive.</p>
+
+                <a href=https://github.com/aiwhoo/GameGarageBook/blob/main/lesson%203%20Player%20Growth%2C%20Score%2C%20and%20Sprite%20Images/step5_soundeffect.html
+                   class="step-link" target="_blank">👉 View Step 5 Code</a>
+
+                <h3>🎵 Load sound file</h3>
+                <img width="100%" src="screenshots/image9_loadingbubbles.png" alt="Load sound example">
+
+                <h3>🎧 Play sound when enemy is eaten</h3>
+                <img width="100%" src="screenshots/image10_soundlogic.png" alt="Sound effect code">
+
+                <p>If the player is bigger than the enemy, the bubble sound effect plays and the enemy is removed.</p>
+            </section>
+
+            <!-- FINAL RESULT -->
+            <section>
+                <h2>🏁 Final Result</h2>
+
+                <p>The player can now:</p>
+                <ul>
+                    <li>Eat smaller fish</li>
+                    <li>Grow in size</li>
+                    <li>Use image-based sprites</li>
+                    <li>Hear sound effects</li>
+                    <li>Earn and display score</li>
+                </ul>
+            </section>
+
+        </main>
+
+    </body>
+</html>
