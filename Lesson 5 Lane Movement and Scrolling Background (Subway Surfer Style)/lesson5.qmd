@@ -1,0 +1,168 @@
+
+---
+title: "Chapter 5: Building a Subway Surfer Clone"
+subtitle: "Movement Systems and Parallax Backgrounds"
+author: "Game Design Essentials"
+format:
+  html:
+    toc: true
+    code-copy: true
+    theme: cosmo
+---
+
+# Introduction
+
+In this chapter, we will begin developing a vertical "Subway Surfer" style game using **Kontra.js**. We will focus on two core pillars of game feel: a scrolling infinite background and a lane-based movement system with input buffering (cooldowns).
+
+::: {.callout-note}
+Kontra.js is a lightweight gaming micro-library. It is perfect for this project because it handles the game loop and sprite management without the overhead of larger engines.
+:::
+
+# Step 1: Set up HTML and Kontra
+
+First, we need to establish our boilerplate. This includes a `<canvas>` element where the game will be rendered and the inclusion of the Kontra library via CDN.
+
+```javascript
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subway Game</title>
+    <script src="[https://unpkg.com/kontra/kontra.min.js](https://unpkg.com/kontra/kontra.min.js)"></script>
+    <style>
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: #88ccee;
+            border: 3px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="game" width="600" height="800"></canvas>
+    <script>
+        let {init, Sprite, GameLoop, initKeys, keyPressed, load, Text} = kontra;
+        let {canvas, context} = init('game');
+        initKeys();
+    </script>
+</body>
+</html>
+```
+
+# Step 2: Background Sprites & GameLoop
+
+To create a world, we need a background. In Kontra, we load assets using the `load` function. Once the image is ready, we create a `Sprite` and initiate the `GameLoop`.
+
+::: {.callout-tip}
+### Asset Management
+Always ensure your `assets/` folder is in the same directory as your HTML file, or the image will fail to load.
+:::
+
+```javascript
+load('assets/background.png').then(images => {
+    let [backgroundImage] = images;
+
+    let background = Sprite({
+        x: 0,
+        y: 0,
+        width: canvas.width,
+        height: canvas.height,
+        image: backgroundImage,
+        draw() {
+            this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
+        }
+    });
+
+    let loop = GameLoop({
+        render() {
+            background.draw();
+        }
+    });
+    loop.start();
+});
+```
+
+# Step 3: Creating the Infinite Scroll
+
+## 3.1 Scrolling Logic
+To simulate movement, we move the background down the Y-axis. When it leaves the screen, we reset it to the top.
+
+
+
+## 3.2 Doubling Up for Continuity
+A single background leaves a gap when it resets. To fix this, we create `background2` and stack it directly above the first one.
+
+```javascript
+let background2 = Sprite({
+    x: 0,
+    y: -canvas.height, // Start directly above the canvas
+    width: canvas.width,
+    height: canvas.height,
+    image: backgroundImage,
+    update() {
+        this.y += 3;
+        if (this.y > 0) this.y = -canvas.height; 
+    },
+    draw() {
+        this.context.drawImage(this.image, this.x, this.y, canvas.width, canvas.height);
+    }
+});
+```
+
+# Step 4: Adding the Player
+
+We represent the player as a simple blue square. Note the `lane` property; this is a **custom state** we use to track which of the three lanes the player occupies.
+
+| Lane | Description | Default X |
+|------|-------------|-----------|
+| 1    | Left        | 176       |
+| 2    | Middle      | 281       |
+| 3    | Right       | 386       |
+
+```javascript
+let player = Sprite({
+    x: 281,
+    y: 700,
+    width: 40,
+    height: 40,
+    lane: 2,
+    color: 'blue'
+});
+```
+
+# Step 5: Movement and Polishing
+
+## 5.1 Lane Snapping
+Instead of free movement, the player "snaps" to specific X coordinates based on their current lane. We use a `switch` statement to map the `lane` integer to a screen position.
+
+## 5.2 The Movement Cooldown
+Without a cooldown, the game updates at ~60fps, meaning a single tap of the arrow key would send the player flying across all lanes instantly.
+
+::: {.callout-warning}
+### Why use a Cooldown?
+A cooldown (or "debounce") ensures that one key press equals exactly one lane change. This is vital for the "snappy" feel expected in runners.
+:::
+
+```javascript
+// Inside the Player Sprite update()
+update() {
+    if (this.cooldown > 0) {
+        this.cooldown -= 1;
+    } else {
+        if (keyPressed('arrowleft') && this.lane > 1) {
+            this.lane -= 1;
+            this.cooldown = 12; // Frames to wait before next move
+        }
+        if (keyPressed('arrowright') && this.lane < 3) {
+            this.lane += 1;
+            this.cooldown = 12;
+        }
+
+        // Snap X position to the Lane
+        switch (this.lane) {
+            case 1: this.x = 176; break;
+            case 2: this.x = 281; break;
+            default: this.x = 386;
+        }
+    }
+}
+```
