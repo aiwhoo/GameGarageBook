@@ -1,0 +1,223 @@
+## Introduction
+
+Now that we have obstacles spawning randomly, the core of our game is functional! In this chapter, we will implement the "meta" layers of the game: tracking the player's score, handling the game-over sequence, and adding immersive sound effects.
+
+---
+
+## Step 10: Player Score
+
+First, we need to create a text object to display the score and variables to track the numerical value. We will use a `scoreTimer` to increment the score over time, rewarding the player for staying alive.
+
+::: {.callout-note}
+The `scoreTimer` will decrease every frame. When it reaches zero, the score increases, mimicking the logic used for enemy spawning.
+:::
+
+### Defining the Variables
+
+Add these variables to your main game setup area:
+
+```javascript
+let score = 0;
+let scoreTimer = 30;
+
+let scoreText = Text({
+    text: 'Score: 0',
+    font: '20px Arial',
+    color: 'black',
+    x: 10,
+    y: 10
+});
+````
+
+### Updating the Score Logic
+
+Since the score is tied to player survival, we place the logic inside the player's `update()` function.
+
+```javascript
+let player = Sprite({
+    // ... existing properties
+    update() {
+        // ... existing movement logic
+
+        scoreTimer--;
+        if (scoreTimer == 0) {
+            score++;
+            scoreTimer = 30;
+            scoreText.text = 'Score: ' + score;
+        }
+    }
+});
+```
+
+### Rendering the Score
+
+Finally, ensure the score is drawn to the screen by adding it to the `render()` function of your `GameLoop`.
+
+```javascript
+let loop = GameLoop({
+    update() { /* ... */ },
+    render() {
+        // ... existing renders
+        scoreText.render();
+    }
+});
+```
+
+-----
+
+## Step 11: The Game-Over Sequence
+
+A game needs a clear ending. We will split this into two parts: detecting the "dead" state and displaying the UI.
+
+### 11.1: Detecting the End
+
+We start by giving the player a `dead` property.
+
+```javascript
+let player = Sprite({
+    color: 'blue',
+    dead: false, // New property
+    update() { /* ... */ }
+});
+```
+
+Next, update the collision code. When the player hits an object, we set `dead` to `true` and move the player to a "hidden" lane (lane 4) to prevent further collisions.
+
+```javascript
+enemies.forEach(e => {
+    if (isColliding(player, e) && e.active == 1) {
+        // Replace previous console logs with:
+        player.dead = true;
+        player.lane = 4;
+        e.active = 0;
+    }
+});
+```
+
+::: {.callout-tip}
+To stop the game world from moving after death, wrap your `player.update()` and `player.render()` calls in a check: `if (!player.dead)`.
+:::
+
+```javascript
+let loop = GameLoop({
+    update() {
+        background2.update();
+        if (!player.dead) {
+            player.update();
+        }
+    },
+    render() {
+        if (!player.dead) {
+            player.render();
+        }
+        // ...
+    }
+});
+```
+
+### 11.2: The Game-Over Screen
+
+We need visual feedback when the player loses. We'll create a semi-transparent overlay and two text objects.
+
+```javascript
+let gameOverScreen = Sprite({
+    x: 0,
+    y: 0,
+    width: canvas.width,
+    height: canvas.height,
+    color: 'black',
+    opacity: 0 // Start invisible
+});
+
+let gameOverText = Text({
+    x: 215,
+    y: 250,
+    text: 'GAME\\nOVER',
+    font: '60px Arial',
+    color: 'white',
+    textAlign: 'center',
+    opacity: 0
+});
+
+let gameOverScore = Text({
+    x: 270,
+    y: 500,
+    text: 'Score',
+    font: '25px Arial',
+    color: 'white',
+    textAlign: 'center',
+    opacity: 0
+});
+```
+
+#### The `gameOver` Function
+
+We want a slight delay before the screen appears to make the death feel less abrupt.
+
+```javascript
+function gameOver() {
+    gameOverScreen.opacity = 0.75;
+    gameOverText.opacity = 1;
+    gameOverScore.opacity = 1;
+    gameOverScore.text = 'Score\\n' + score;
+}
+
+// Trigger this in your collision code with a delay:
+setTimeout(() => gameOver(), 500);
+```
+
+-----
+
+## Step 12: Sound Effects
+
+Our game is feature-complete\! Let's add the finishing touches with audio.
+
+### Loading Assets
+
+Add the audio files to your `load` statement and create `Audio` objects.
+
+```javascript
+load('assets/background.png', 'assets/jump.wav', 'assets/slide.wav', 
+     'assets/collide.wav', 'assets/lose.wav').then(images => {
+    
+    let jumpSound = new Audio('assets/jump.wav');
+    let slideSound = new Audio('assets/slide.wav');
+    let collideSound = new Audio('assets/collide.wav');
+    let loseSound = new Audio('assets/lose.wav');
+    
+    // ...
+});
+```
+
+### Triggering Sounds
+
+Play the sounds during the corresponding events:
+
+1.  **Jump/Slide**: Inside the player's `update()` switch-case.
+2.  **Collision**: Inside the `enemies.forEach` loop.
+3.  **Game Over**: Inside the `gameOver()` function.
+
+<!-- end list -->
+
+```javascript
+// Example: Playing the jump sound
+if (keyPressed('arrowup')) {
+    this.state = 'jump';
+    jumpSound.play();
+}
+```
+
+::: {.callout-warning}
+
+### Browser Autoplay Policy
+
+Modern browsers (like Chrome) block audio from playing automatically. To hear your sounds, you must interact with the page (click on the game window) after refreshing.
+:::
+
+-----
+
+## Conclusion
+
+Congratulations\! You have successfully built a complete game loop with scoring, collision handling, and audio feedback.
+
+**End of Class 7**

@@ -1,0 +1,165 @@
+
+
+### Quarto Document Content
+
+
+---
+title: "Unit 8: Themes, Characters, and the Polish Phase"
+format: html
+---
+
+## Introduction
+
+Until now, our game has been made of simple geometric shapes. While the mechanics work perfectly, a game's **identity** comes from its visual style and characters. In this chapter, we will swap our colored rectangles for sprites, implement character states with different images, and finalize the "Polish Phase."
+
+
+
+---
+
+## Step 13: Importing Game Art
+
+The sprites and art help shape a game's identity. You can find sprites online for public use (like the bus sprite included in your assets folder), or you can create them yourself! 
+
+::: {.callout-important}
+### Be Creative!
+The important part is to make it yours. Whether you draw a cat riding a rocket skateboard or a simple robot, let the art reflect your vision. It doesn't have to be perfect to be professional.
+:::
+
+### Loading Sprites into the Array
+
+For each sprite we add, we must include it in the `load` statement. We then destructure them into variables from the `images` array.
+
+::: {.callout-warning}
+### Order Matters
+Images are added to the array in the **exact order** they appear in the load statement. Also, always list your image assets **before** your sound files to avoid loading errors.
+:::
+
+```javascript
+load(
+  'assets/background.png', 
+  'assets/short.png', 
+  'assets/tall.png', 
+  'assets/bus.png', 
+  'assets/run.png', 
+  'assets/jump.png', 
+  'assets/slide.png', 
+  'assets/jump.wav', 
+  'assets/slide.wav', 
+  'assets/collide.wav', 
+  'assets/lose.wav'
+).then(images => {
+    // Destructure images into meaningful variable names
+    let [backgroundImage, shortImage, tallImage, busImage, runImage, jumpImage, slideImage] = images;
+    
+    // Your game initialization continues here...
+});
+```
+
+---
+
+## Step 14: From Colors to Sprites
+
+To display our new art, we need to replace the `color` property in our `Sprite` objects with an `image` property. Additionally, we must provide a custom `draw()` function.
+
+### Why use draw() instead of render()?
+The default `render()` function in many libraries displays objects based on the object's logic size. By using `this.context.drawImage`, we ensure the image scales correctly to the `width` and `height` we defined for our hitboxes.
+
+#### Updating the Enemy Logic
+Find your `switch(newEnemy)` statement and update the "short" enemy:
+
+```javascript
+switch(newEnemy) {
+    case "short":
+        let short = Sprite({
+            x: spawnPos - 35,
+            y: -30,
+            width: 70,
+            height: 30,
+            image: shortImage,  // Replace 'color: "red"' with this
+            lane: lastSpawn,
+            type: 'short',
+            active: 1,
+            update() { /* existing logic */ },
+            draw() {
+                // This draws the image to the canvas
+                this.context.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+        });
+}
+```
+
+::: {.callout-tip}
+### Task: Complete the Set
+Repeat this process for the **Player**, the **Tall** obstacles, and the **Bus** obstacles. Every object needs an `image` property and a `draw()` function.
+:::
+
+---
+
+## Step 15: Updating the Game Loop
+
+Now that our objects have a `draw()` method, we need to tell our `GameLoop` to use it instead of the default `render()`.
+
+
+
+Update your `render()` function inside the `GameLoop`:
+
+```javascript
+render() {
+    // ... other renders
+    enemies.forEach(e => {
+        if (e.type == 'tall') {
+            // Special logic for tall obstacles if needed
+            e.draw(); 
+        } else {
+            e.draw();  // Replace e.render();
+        }
+    });
+
+    if (!player.dead) {
+        player.draw();  // Replace player.render();
+    }
+
+    tallList.forEach(e => e.draw()); // Replace e.render();
+    scoreText.render(); // Text still uses render()!
+}
+```
+
+---
+
+## Step 16: Character States and Animation
+
+To make the player feel alive, the sprite should change based on what they are doing. We can achieve this by swapping the `this.image` property inside the player's `update()` function.
+
+```javascript
+let player = Sprite({
+    // ... properties
+    update() {
+        switch (this.state) {
+            case 'run':
+                this.image = runImage;  // Switch to running sprite
+                if (keyPressed('arrowdown')) { /* ... */ }
+                else if (keyPressed('arrowup')) { /* ... */ }
+                break;
+
+            case 'slide':
+                this.image = slideImage; // Switch to sliding sprite
+                if (this.cooldown == 0) { /* ... */ }
+                break;
+
+            case 'jump':
+                this.image = jumpImage;  // Switch to jumping sprite
+                if (this.cooldown == 0) { /* ... */ }
+                break; 
+        }
+    }
+});
+```
+
+---
+
+## Conclusion
+
+By swapping simple shapes for descriptive sprites, you've given your game a world and a story. Whether your game is about a bus-dodging cat or a sci-fi explorer, the **Polish Phase** is what makes your game memorable to the player.
+
+**End of Unit 8**
+```
