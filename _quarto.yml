@@ -13,20 +13,20 @@ website:
       - href: index.qmd
         text: Motivation
 
-      - href: keyFindings.qmd
-        text: Key Findings
+      - href: lesson5.qmd
+        text: "Chapter 5: Building a Subway Surfer Clone"
 
-      - href: detailedFindings.qmd
-        text: Detailed Findings
+      - href: lesson6.qmd
+        text: "Chapter 6: Obstacles and Collision"
 
-      - href: method.qmd
-        text: Method
+      - href: lesson7.qmd
+        text: "Chapter 7: Scoring and Sound"
 
-      - href: summary.qmd
-        text: Summary
+      - href: lesson8.qmd
+        text: "Customization and Polish"
 
-      - href: appendix.qmd
-        text: Appendix
+
+
 
 format:
   html:

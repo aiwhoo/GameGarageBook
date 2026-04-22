@@ -1,10 +1,3 @@
-
----
-title: "Chapter 6: Obstacles and Collision"
-subtitle: "Game Design Series"
-format: html
----
-
 # Obstacles
 
 Now that the player can move, we can start making obstacles. First, we have to consider how the player will interact with these obstacles. Since the player will be able to jump and slide, we will create obstacles that require those specific actions to avoid.

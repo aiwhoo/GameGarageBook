@@ -1,15 +1,3 @@
-
----
-title: "Chapter 5: Building a Subway Surfer Clone"
-subtitle: "Movement Systems and Parallax Backgrounds"
-author: "Game Design Essentials"
-format:
-  html:
-    toc: true
-    code-copy: true
-    theme: cosmo
----
-
 # Introduction
 
 In this chapter, we will begin developing a vertical "Subway Surfer" style game using **Kontra.js**. We will focus on two core pillars of game feel: a scrolling infinite background and a lane-based movement system with input buffering (cooldowns).
