@@ -1,17 +1,7 @@
 
-
-### Quarto Document Content
-
-
----
-title: "Unit 8: Themes, Characters, and the Polish Phase"
-format: html
----
-
 ## Introduction
 
 Until now, our game has been made of simple geometric shapes. While the mechanics work perfectly, a game's **identity** comes from its visual style and characters. In this chapter, we will swap our colored rectangles for sprites, implement character states with different images, and finalize the "Polish Phase."
-
 
 
 ---
@@ -162,4 +152,4 @@ let player = Sprite({
 By swapping simple shapes for descriptive sprites, you've given your game a world and a story. Whether your game is about a bus-dodging cat or a sci-fi explorer, the **Polish Phase** is what makes your game memorable to the player.
 
 **End of Unit 8**
-```
+
