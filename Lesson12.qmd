@@ -1,0 +1,112 @@
+## Functional vs. Fun
+
+A game can work perfectly and still feel flat. The difference? Level design and polish.
+
+::: {.callout-note title="Key Concepts"}
+* **Level Design**: Guiding the player through space intentionally shaping their journey from start to goal.
+* **Polish**: Small details that make the game feel satisfying - feedback, sound, and visual flair.
+* **Flow**: The sweet spot between challenge and skill - where players lose track of time.
+:::
+
+
+## Every Level Needs an Ending
+
+Without a goal, there's no journey. The win condition is your level's promise to the player.
+
+### Types of Endings
+
+* **Flagpole**: Classic and clear - players instantly understand it's the end.
+* **Portal**: Mysterious and inviting - great for sci-fi or fantasy settings.
+* **Door**: Simple and scalable - works in any genre or art style.
+
+::: {.callout-tip title="The Goldilocks Zone"}
+Not too short (no challenge), not too long (no payoff). Aim for 60-90 seconds of play per level.
+:::
+
+## Visual Language: Pointing Without Words
+
+Players should feel where to go before they think about it. Use visual cues to guide them naturally.
+
+::: {.layout-ncol="2"}
+### Clear Goal
+Distinct, bright path with directional cues and bold contrast.
+
+### Unclear Goal
+Small, dull object in complex maze with no clues or contrast.
+:::
+
+### Three Rules of Visual Guidance
+
+1. **Bright Colors**: Warm, saturated tones pull the eye. Use them on goals and key paths.
+2. **Larger Objects**: Size equals importance. Make the goal bigger than surrounding elements.
+3. **Signs & Symbols**: Arrows, banners, and icons communicate direction instantly.
+
+## Writing the Win Condition
+
+The goal is just another object in your world - the magic is in the collision check.
+
+| Define the Goal | Check Collision | Trigger Victory |
+|---|---|---|
+| Store position and size like any game object. | Every frame, test if player overlaps the goal. | Call your end-level function - show the win screen! |
+
+```javascript
+let goal = { x: 1500, y: 300, width: 40, height: 60 };
+
+function checkWin() {
+  if (collides(player, goal)) {
+    victoryScreen();
+  }
+}
+````
+
+## The Camera: Bigger Than the Screen
+
+When your level is wider than the screen, you can't show everything at once. The solution? Move the world, not the player.
+
+  * **The Problem**: Player reaches the edge now what? A static camera cuts off the world.
+  * **The Solution**: Track the player's position and shift everything else in the opposite direction.
+  * **The Rule**: If the player moves right -\> the camera (and world) moves left.
+
+### Camera Math Made Simple
+
+World space is where objects actually live. Screen space is where they appear on your monitor. The camera bridges the two.
+
+Center the camera on the player by subtracting half the screen width.
+
+```javascript
+cameraX = player.x - width/2;
+
+// When drawing any object:
+drawX = object.x - cameraX;
+```
+
+## Game Feel: The Juice
+
+Juice is the layer of feedback that makes actions feel satisfying. Small details, massive impact.
+
+  * **Screen Shake**: A quick camera jolt on impact or landing sells weight and power.
+  * **Sound Effects**: Every action needs a sound - jumps, landings, collectibles, wins.
+  * **Visual Feedback**: Particles, flashes, and animations confirm that something happened.
+
+## Flow & Challenge: Designing the Journey
+
+### Three Pillars of Level Flow
+
+1.  **Critical Path**: The main route from start to goal. Keep it clear and readable.
+2.  **Risk vs. Reward**: Optional paths with harder jumps but better pickups let players choose.
+3.  **Difficulty Curve**: Start easy -\> build challenge -\> final test before the goal.
+
+## Lab Challenge: Build Your Scrolling Level
+
+Time to put it all together. Your level should feel designed, not just assembled.
+
+::: {.callout-important title="Steps"}
+
+1.  **Place the Goal at x \>= 2000**: Make it visually distinct use color, size, and contrast.
+2.  **Add the Camera System**: Use `cameraX = player.x - width/2` and offset all draws.
+3.  **Design Difficulty Progression**: Easy start -\> harder middle -\> final challenge before the goal.
+4.  **Add Polish**: Screen shake on landing, a sound on goal touch, or particle effects.
+    :::
+
+> **Think further:** How would you adapt the camera system for a vertical scrolling level?
+

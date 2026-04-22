@@ -1,0 +1,91 @@
+## Introduction: Simulation vs. Game
+
+A simulation runs on its own, but a **game** gives players a reason to care. To turn a simulation into a real game, you need to introduce motivation, danger, and consequence through two main ingredients:
+
+1.  **Motivation:** Collectibles (coins, gems, power-ups) give players a goal and create reward.
+2.  **Risk:** Enemies introduce danger. Without consequences, there is no tension or thrill.
+
+---
+
+## The Object Lifecycle
+
+Understanding the lifecycle of a game object is the foundation for managing dynamic environments cleanly. Unlike platforms, which are persistent, coins and enemies are temporary.
+
+
+* **Spawn:** The object is created and added to the game world.
+* **Interact:** The player or environment engages with the object.
+* **Removed:** The object disappears once its purpose is fulfilled (e.g., collected or defeated).
+
+## Managing Objects with Arrays
+
+In development, we store dynamic objects in **arrays**. These ordered lists allow us to loop through and manage many objects at once.
+
+```javascript
+let coins = [
+  { x: 100, y: 200, size: 20, collected: false },
+  { x: 300, y: 150, size: 20, collected: false }
+];
+````
+
+### Key Properties
+
+  * **x, y:** Position on the screen.
+  * **Size:** Hitbox dimensions for collision detection.
+  * **State:** Tracks if the object is active, collected, or dead.
+
+::: {.callout-important}
+
+### Loop Backwards\!
+
+Always loop **backwards** through arrays when removing items (using `splice()`). If you loop forwards, the array shrinks and indices shift, causing the loop to skip the next element.
+:::
+
+-----
+
+## Interaction Logic
+
+### Collectibles
+
+When the player's hitbox overlaps a coin's hitbox, the coin is collected and the score increases. Unlike platforms, coins have a "touch-and-go" interaction—they do not block or snap the player's movement.
+
+**Logic Flow:**
+`Check Overlap` $\rightarrow$ `Trigger Effect` $\rightarrow$ `Remove from Array`
+
+### Enemies and Patrol Behavior
+
+Enemies are hazards that move and punish the player. The simplest behavior is a **patrol**, where the enemy moves back and forth along a set path.
+
+  * **Speed:** A property controlling movement per frame.
+  * **Patrol Range:** The enemy tracks a starting position; when it hits the edge of its range, it reverses its speed.
+  * **Update Loop:** Each frame updates $x += speed$.
+
+-----
+
+## Advanced Mechanic: The Stomp
+
+A classic platformer twist is the "stomp" mechanic: landing on an enemy defeats it, but running into it from the side results in a Game Over. This is determined by **Vertical Velocity** ($dy$).
+
+| Movement Condition | Result |
+|--------------------|--------|
+| $dy > 0$ (Falling downward) | **Stomp/Win** (Enemy removed) |
+| $dy \le 0$ (Moving up or flat) | **Collision/Lose** (Game Reset) |
+
+::: {.callout-tip}
+
+### Bonus Idea: The Gold Enemy
+
+Add a high-speed "Gold Enemy" that is significantly harder to stomp. This provides an extra layer of challenge for advanced players.
+:::
+
+-----
+
+## Lab Challenge: Implementation
+
+1.  **Add Coins:** Spawn collectibles, detect collision, and use `splice()` to remove them.
+2.  **Add an Enemy:** Implement patrol behavior with boundary reversal.
+3.  **Implement the Stomp:** Add logic to check $dy$ during enemy collisions.
+4.  **Polish:** Create a reset trigger that returns the player to the start upon losing.
+
+<!-- end list -->
+
+

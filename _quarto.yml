@@ -23,8 +23,19 @@ website:
         text: "Chapter 7: Scoring and Sound"
 
       - href: lesson8.qmd
-        text: "Customization and Polish"
+        text: "Lesson 8: Customization and Polish"
+      
+      - href: Lesson9.qmd
+        text: "Lesson 9: Simple Platformer Gravity and Jumping"
 
+      - href: Lesson10.qmd
+        text: "Lesson 10: Simple Platformer - Platforms and Collision"
+
+      - href: Lesson11.qmd
+        text: "Enemies and Collectibles: Adding Risk and Reward"
+      
+      - href: Lesson12.qmd
+        text: "Chapter 12: Level Design and Polish"
 
 
 

@@ -1,0 +1,102 @@
+
+## From Graphics to Physics
+
+In the previous unit, we focused on the aesthetics of game design—sprites, animations, and sound. Now, we move into the mechanics that make characters move like they belong in a real game.
+
+### The Side-Scrolling Platformer
+In a standard platformer, the player moves left and right across a level, jumping over obstacles and enemies. The "Big Difference" between a simple moving sprite and a true platformer is **gravity**. Everything in the game world falls unless something explicitly stops it.
+
+::: {.callout-tip}
+## Core Idea
+Movement in platformers is about timing and jumping, not just position.
+:::
+
+---
+
+## What Is Gravity in Games?
+
+In the real world, gravity isn't a constant movement; it is an acceleration. Objects don't just move at a steady speed—they speed up the longer they fall.
+
+* **Constant Acceleration:** Every frame, gravity adds a small amount of downward speed.
+* **Real Fall vs. Constant Speed:** Without gravity, a falling object would drift at one speed forever. With gravity, it accelerates over time.
+
+---
+
+## Key Physics Variables
+
+To create realistic falling motion, two primary variables work together every frame:
+
+| Variable | Definition | Role |
+|----------|------------|------|
+| **Velocity (dy)** | Vertical speed | Positive = moving down. Negative = moving up. Changes every frame. |
+| **Gravity** | Constant force | A constant added to `dy` each frame. Always pulls the player downward. |
+| **Position (y)** | Screen location | Where the player is on screen. Updated by adding `dy` each frame. |
+
+### The Falling Logic
+In short, falling can be summarized by two lines of code that run every frame:
+1. `dy += gravity`
+2. `y += dy`
+
+---
+
+## The Y-Axis Trick
+
+Screen coordinates work differently than the standard Cartesian math taught in school, which often trips up new developers.
+
+* **The Origin:** The (0,0) point is at the **Top-Left** of the screen.
+* **Moving Down:** This is represented by **+dy**. Increasing `y` moves you down the screen.
+* **Moving Up:** This is represented by **-dy**. Jumping requires giving the player a negative velocity.
+
+::: {.callout-important}
+## Visual Reference
+Imagine the player at the top of the screen. To make them "fall," you are adding to their Y-coordinate.
+:::
+
+---
+
+## Collision – Hitting the Ground
+
+Without collision logic, your player would fall through the floor forever. We solve this by "snapping" the player to the ground level and resetting their velocity.
+
+```python
+# Simple Ground Collision Logic
+if y > groundLevel:
+    y = groundLevel    # Snap to ground
+    dy = 0             # Stop falling
+    onGround = True    # Player is grounded
+```
+
+The `onGround` variable is essential for tracking whether the player is currently permitted to jump.
+
+---
+
+## Jumping Mechanics
+
+A jump is essentially a sudden burst of negative velocity. It follows a three-step process:
+
+1. **Check Grounded:** Only allow the jump if `onGround == True`.
+2. **Apply Jump Force:** Set `dy = -jumpStrength` (negative is upward).
+3. **Reset State:** Set `onGround = False` so the player cannot jump again while in mid-air.
+
+> **Why this matters:** Without the `onGround` check, players could "spam" the jump button and fly, breaking the game entirely.
+
+---
+
+## Improving "Game Feel"
+
+Physics shouldn't just be accurate; it should be fun. Small tweaks can change the entire personality of your game.
+
+### Physics Tweaks
+* **Terminal Velocity:** Cap the maximum fall speed so players don't accelerate to infinite speeds.
+* **Jump Strength:** Too high feels "floaty," while too low feels "heavy." 
+* **Earth vs. Moon:** Reducing gravity simulates a moon jump, resulting in higher, slower jumps.
+
+---
+
+## Lab Challenge: Variable Jump Height
+
+**The Challenge:** Make holding the jump button produce a higher jump than a quick tap. 
+**Hint:** Try reducing the gravity constant slightly while the player is rising and the jump button is still being held.
+
+## Up Next
+**Platforms!** Learn how to detect and respond to collisions with multiple surfaces across a complex level.

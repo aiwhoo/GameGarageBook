@@ -1,0 +1,116 @@
+## Introduction
+
+In our previous session, we mastered **jumps and gravity**, creating a player capable of moving vertically through the air. However, a single flat ground is functional, but it isn’t a game yet. 
+
+Today's goal is to transition from a single floor to a complex game world by building real, solid platforms that the player can stand on. Platformers thrive on variety and challenge, which we achieve through:
+
+* **Floating Ledges:** Giving players something to aim for.
+* **Obstacles & Gaps:** Creating risk, timing, and skill.
+* **Different Heights:** Adding vertical exploration and depth.
+
+::: {.callout-tip}
+### Key Idea
+Moving from one ground to many objects is what transforms a simple mechanic into a true game world.
+:::
+
+---
+
+## Defining Platforms with Arrays
+
+Instead of hardcoding a single ground object, we store multiple platforms within an **Array**. This allows us to manage many objects efficiently. Each platform is defined as a `Sprite` with a specific position and size.
+
+### Platform Properties
+1.  **Position (x, y):** Defines the top-left corner of the platform.
+2.  **Size (width, height):** Defines the dimensions of the platform.
+
+```javascript
+let platforms = [
+  Sprite({ x: 0, y: 350, width: 800, height: 50 }),
+  Sprite({ x: 200, y: 250, width: 100, height: 20 }),
+  Sprite({ x: 450, y: 180, width: 100, height: 20 })
+];
+```
+
+---
+
+## Static vs. Dynamic Objects
+
+Every object in your game world falls into one of two categories. Understanding the interaction between these two is the foundation of collision detection.
+
+| Feature | Static Objects | Dynamic Objects |
+|---------|----------------|-----------------|
+| **Examples** | Platforms, Surfaces, Walls | Player, Enemies, Items |
+| **Movement** | Fixed positions; no movement | Moves constantly; affected by physics |
+| **Role** | Act as obstacles or floors | Responds to player input and environment |
+
+::: {.callout-note}
+**Interaction:** Collision detection is the process where the **dynamic** player checks against every **static** platform during every single frame of the game loop.
+:::
+
+---
+
+## Collision Detection: The AABB Method
+
+We use **AABB (Axis-Aligned Bounding Box)** detection. Imagine an invisible rectangle wrapped tightly around every game object.
+
+### The Rules of AABB
+* **Axis-Aligned:** Rectangles never rotate; their edges stay perfectly parallel to the screen.
+* **Bounding Box:** A rectangle that fully contains the object's shape.
+* **Detect Overlap:** If two boxes overlap, a collision has occurred.
+
+
+### The 4 Collision Rules
+Two rectangles are colliding **only** when all four of these conditions are true simultaneously:
+
+1.  **Top < Bottom:** `rect1.top < rect2.bottom`
+2.  **Bottom > Top:** `rect1.bottom > rect2.top`
+3.  **Left < Right:** `rect1.left < rect2.right`
+4.  **Right > Left:** `rect1.right > rect2.left`
+
+If even one of these is false (e.g., the player is beside a platform but not overlapping), there is no collision.
+
+---
+
+## Implementation
+
+### The Collision Function
+We use the `&&` (AND) operator to ensure all four boundary checks pass.
+
+```javascript
+function collides(rect1, rect2) {
+  return rect1.x < rect2.x + rect2.width &&
+         rect1.x + rect1.width > rect2.x &&
+         rect1.y < rect2.y + rect2.height &&
+         rect1.y + rect1.height > rect2.y;
+}
+```
+
+### The Collision Loop and Landing Logic
+Each frame, we loop through the `platforms` array. When a collision is detected, we "snap" the player to the surface to prevent them from falling through.
+
+```javascript
+for (let p of platforms) {
+  if (collides(player, p)) {
+    // Landing detected
+    player.vy = 0; // Stop vertical velocity
+    player.y = p.y - player.height; // Snap to top of platform
+  }
+}
+```
+
+---
+
+## Lab Challenge: Level Design
+
+Now that you have unlocked level design, it is time to build!
+
+### Task 1: The Staircase
+Build a staircase of **5 platforms** with progressively harder jumps. Make the player earn every step!
+
+### Task 2: Edge Cases (Refinement)
+Fix "head-bonks." Modify your logic so that hitting the underside of a platform stops upward movement rather than pulling the player through to the top.
+
+::: {.callout-warning}
+### Bonus Challenge: Danger Zones
+Add a **Lava Platform**. If the player's bounding box overlaps with this platform, reset the player's position to the start of the level instantly!
+:::
