@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Project Title – template</title>
+<title>Chapter 1: What is Data? – template</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,45 +20,10 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -103,16 +68,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-window.PlotlyConfig = {MathJaxConfig: 'local'};
-if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
 </script>
-<script type="module">import "https://cdn.plot.ly/plotly-3.0.1.min"</script>
-
-
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -197,8 +182,16 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#motivation-for-this-work" id="toc-motivation-for-this-work" class="nav-link active" data-scroll-target="#motivation-for-this-work">Motivation for this Work</a></li>
-  <li><a href="#this-is-a-subtitle" id="toc-this-is-a-subtitle" class="nav-link" data-scroll-target="#this-is-a-subtitle">This is a subtitle</a></li>
+  <li><a href="#big-questions" id="toc-big-questions" class="nav-link active" data-scroll-target="#big-questions">Big Questions</a></li>
+  <li><a href="#data-all-around-us" id="toc-data-all-around-us" class="nav-link" data-scroll-target="#data-all-around-us">1.1 Data All Around Us</a>
+  <ul class="collapse">
+  <li><a href="#sensors-and-sources" id="toc-sensors-and-sources" class="nav-link" data-scroll-target="#sensors-and-sources">Sensors and Sources</a></li>
+  </ul></li>
+  <li><a href="#types-of-data-structured-vs.-unstructured" id="toc-types-of-data-structured-vs.-unstructured" class="nav-link" data-scroll-target="#types-of-data-structured-vs.-unstructured">1.2 Types of Data: Structured vs.&nbsp;Unstructured</a></li>
+  <li><a href="#activity-1-log-your-data" id="toc-activity-1-log-your-data" class="nav-link" data-scroll-target="#activity-1-log-your-data">1.3 Activity 1: Log Your Data</a></li>
+  <li><a href="#activity-2-explore-your-google-data" id="toc-activity-2-explore-your-google-data" class="nav-link" data-scroll-target="#activity-2-explore-your-google-data">1.4 Activity 2: Explore Your Google Data</a></li>
+  <li><a href="#activity-3-text-message-analysis" id="toc-activity-3-text-message-analysis" class="nav-link" data-scroll-target="#activity-3-text-message-analysis">1.5 Activity 3: Text Message Analysis</a></li>
+  <li><a href="#activity-4-pose-detection-computer-vision" id="toc-activity-4-pose-detection-computer-vision" class="nav-link" data-scroll-target="#activity-4-pose-detection-computer-vision">1.6 Activity 4: Pose Detection &amp; Computer Vision</a></li>
   </ul>
 </nav>
     </div>
@@ -207,7 +200,8 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Project Title</h1>
+<h1 class="title">Chapter 1: What is Data?</h1>
+<p class="subtitle lead">Session 1: Data All Around Us — Capturing and Using Everyday Data</p>
 </div>
 
 
@@ -224,143 +218,154 @@ if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.M
 </header>
 
 
-<p><em>Author, Technology Service Center, University of Delaware</em></p>
-<p>20XX-XX-XX</p>
-<section id="motivation-for-this-work" class="level2">
-<h2 class="anchored" data-anchor-id="motivation-for-this-work">Motivation for this Work</h2>
-<p>Insert a paragraph of the motivation of this work.</p>
+<section id="big-questions" class="level2">
+<h2 class="anchored" data-anchor-id="big-questions">Big Questions</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>What is data?</strong></li>
+<li><strong>Where does it come from in our lives?</strong></li>
+</ul>
+</div>
+</div>
 </section>
-<section id="this-is-a-subtitle" class="level2">
-<h2 class="anchored" data-anchor-id="this-is-a-subtitle">This is a subtitle</h2>
-<p>This is text.</p>
-<p><a href="https://quarto.org/">Hyperlink to an externel website</a></p>
-<p><a href="keyFindings.html#key-finding-1">Hyperlink to another section</a></p>
-<p>A table is below:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Item</th>
-<th style="text-align: center;">In Stock</th>
-<th style="text-align: right;">Price</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Python Hat</td>
-<td style="text-align: center;">True</td>
-<td style="text-align: right;">23.99</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">SQL Hat</td>
-<td style="text-align: center;">True</td>
-<td style="text-align: right;">23.99</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Codecademy Tee</td>
-<td style="text-align: center;">False</td>
-<td style="text-align: right;">19.99</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Codecademy Hoodie</td>
-<td style="text-align: center;">False</td>
-<td style="text-align: right;">42.99</td>
-</tr>
-</tbody>
-</table>
-<p>This is an image:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./assets/cat.png" class="img-fluid figure-img"></p>
-<figcaption>Figure 1: Cat image</figcaption>
-</figure>
+<section id="data-all-around-us" class="level2">
+<h2 class="anchored" data-anchor-id="data-all-around-us">1.1 Data All Around Us</h2>
+<p>[cite_start]From the moment you wake up to the time you go to sleep, nearly every action you take can produce data[cite: 106]. [cite_start]Think about how much information you generate in a single day[cite: 105]. [cite_start]Whether you are checking your phone, walking to class, streaming music, or scrolling through social media, you are leaving a digital trail[cite: 107].</p>
+<section id="sensors-and-sources" class="level3">
+<h3 class="anchored" data-anchor-id="sensors-and-sources">Sensors and Sources</h3>
+<p>Most of this data is captured automatically by sensors embedded in the devices we use every day. * [cite_start]<strong>Smartphones:</strong> Your phone’s step counter tracks your physical movement[cite: 108]. * [cite_start]<strong>Web Browsers:</strong> Your history logs your searches and interests[cite: 108]. * [cite_start]<strong>Apps:</strong> Services like Spotify or Apple Music save your favorite songs and create playlists based on your listening habits[cite: 108]. * <strong>GPS:</strong> Tracks your location data to help with navigation or tag your photos.</p>
+</section>
+</section>
+<section id="types-of-data-structured-vs.-unstructured" class="level2">
+<h2 class="anchored" data-anchor-id="types-of-data-structured-vs.-unstructured">1.2 Types of Data: Structured vs.&nbsp;Unstructured</h2>
+<p>As we explore the data generated by these devices, it is helpful to categorize it into two main types:</p>
+<ol type="1">
+<li><strong>Structured Data:</strong> This is highly organized and formatted data that is easily searchable in relational databases.
+<ul>
+<li><em>Examples:</em> Your daily step count (a number), dates on a calendar, or an Excel spreadsheet of expenses.</li>
+</ul></li>
+<li><strong>Unstructured Data:</strong> This data has no pre-defined format or organization, making it more difficult to collect, process, and analyze.
+<ul>
+<li><em>Examples:</em> The body of a text message, video files, photos, or social media posts.</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+<section id="activity-1-log-your-data" class="level2">
+<h2 class="anchored" data-anchor-id="activity-1-log-your-data">1.3 Activity 1: Log Your Data</h2>
+<p><strong>Objective:</strong> To become aware of the sheer volume of data generated in a typical day.</p>
+<p><strong>Instructions:</strong> [cite_start]For this activity, take one full day and write down everything you did yesterday[cite: 107]. 1. [cite_start]<strong>List Actions:</strong> Include things like checking your phone, walking to class, or using social media[cite: 107]. 2. [cite_start]<strong>Identify Data:</strong> Beside each action, identify what data is created[cite: 108]. * <em>Example:</em> Walking <span class="math inline">\(\rightarrow\)</span> Step count data. * [cite_start]<em>Example:</em> Searching Google <span class="math inline">\(\rightarrow\)</span> Browser history logs[cite: 108]. 3. [cite_start]<strong>Locate Storage:</strong> Try to be specific about where this data is stored (e.g., on your device, in the cloud, or in an app)[cite: 109].</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Interactive plot is below:</p>
-<div id="07e8e26e" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="32340178-52d9-4144-99e7-afce5699560c" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("32340178-52d9-4144-99e7-afce5699560c")) {                    Plotly.newPlot(                        "32340178-52d9-4144-99e7-afce5699560c",                        [{"hovertemplate":"species=setosa\u003cbr\u003esepal_width=%{x}\u003cbr\u003esepal_length=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"setosa","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"setosa","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"AAAAAAAADEAAAAAAAAAIQJqZmZmZmQlAzczMzMzMCEDNzMzMzMwMQDMzMzMzMw9AMzMzMzMzC0AzMzMzMzMLQDMzMzMzMwdAzczMzMzMCECamZmZmZkNQDMzMzMzMwtAAAAAAAAACEAAAAAAAAAIQAAAAAAAABBAmpmZmZmZEUAzMzMzMzMPQAAAAAAAAAxAZmZmZmZmDkBmZmZmZmYOQDMzMzMzMwtAmpmZmZmZDUDNzMzMzMwMQGZmZmZmZgpAMzMzMzMzC0AAAAAAAAAIQDMzMzMzMwtAAAAAAAAADEAzMzMzMzMLQJqZmZmZmQlAzczMzMzMCEAzMzMzMzMLQGZmZmZmZhBAzczMzMzMEEDNzMzMzMwIQJqZmZmZmQlAAAAAAAAADEDNzMzMzMwIQAAAAAAAAAhAMzMzMzMzC0AAAAAAAAAMQGZmZmZmZgJAmpmZmZmZCUAAAAAAAAAMQGZmZmZmZg5AAAAAAAAACEBmZmZmZmYOQJqZmZmZmQlAmpmZmZmZDUBmZmZmZmYKQA=="},"xaxis":"x","y":{"dtype":"f8","bdata":"ZmZmZmZmFECamZmZmZkTQM3MzMzMzBJAZmZmZmZmEkAAAAAAAAAUQJqZmZmZmRVAZmZmZmZmEkAAAAAAAAAUQJqZmZmZmRFAmpmZmZmZE0CamZmZmZkVQDMzMzMzMxNAMzMzMzMzE0AzMzMzMzMRQDMzMzMzMxdAzczMzMzMFkCamZmZmZkVQGZmZmZmZhRAzczMzMzMFkBmZmZmZmYUQJqZmZmZmRVAZmZmZmZmFEBmZmZmZmYSQGZmZmZmZhRAMzMzMzMzE0AAAAAAAAAUQAAAAAAAABRAzczMzMzMFEDNzMzMzMwUQM3MzMzMzBJAMzMzMzMzE0CamZmZmZkVQM3MzMzMzBRAAAAAAAAAFkCamZmZmZkTQAAAAAAAABRAAAAAAAAAFkCamZmZmZkTQJqZmZmZmRFAZmZmZmZmFEAAAAAAAAAUQAAAAAAAABJAmpmZmZmZEUAAAAAAAAAUQGZmZmZmZhRAMzMzMzMzE0BmZmZmZmYUQGZmZmZmZhJAMzMzMzMzFUAAAAAAAAAUQA=="},"yaxis":"y","type":"scatter"},{"hovertemplate":"species=versicolor\u003cbr\u003esepal_width=%{x}\u003cbr\u003esepal_length=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"versicolor","marker":{"color":"#EF553B","symbol":"circle"},"mode":"markers","name":"versicolor","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"mpmZmZmZCUCamZmZmZkJQM3MzMzMzAhAZmZmZmZmAkBmZmZmZmYGQGZmZmZmZgZAZmZmZmZmCkAzMzMzMzMDQDMzMzMzMwdAmpmZmZmZBUAAAAAAAAAAQAAAAAAAAAhAmpmZmZmZAUAzMzMzMzMHQDMzMzMzMwdAzczMzMzMCEAAAAAAAAAIQJqZmZmZmQVAmpmZmZmZAUAAAAAAAAAEQJqZmZmZmQlAZmZmZmZmBkAAAAAAAAAEQGZmZmZmZgZAMzMzMzMzB0AAAAAAAAAIQGZmZmZmZgZAAAAAAAAACEAzMzMzMzMHQM3MzMzMzARAMzMzMzMzA0AzMzMzMzMDQJqZmZmZmQVAmpmZmZmZBUAAAAAAAAAIQDMzMzMzMwtAzczMzMzMCEBmZmZmZmYCQAAAAAAAAAhAAAAAAAAABEDNzMzMzMwEQAAAAAAAAAhAzczMzMzMBEBmZmZmZmYCQJqZmZmZmQVAAAAAAAAACEAzMzMzMzMHQDMzMzMzMwdAAAAAAAAABEBmZmZmZmYGQA=="},"xaxis":"x","y":{"dtype":"f8","bdata":"AAAAAAAAHECamZmZmZkZQJqZmZmZmRtAAAAAAAAAFkAAAAAAAAAaQM3MzMzMzBZAMzMzMzMzGUCamZmZmZkTQGZmZmZmZhpAzczMzMzMFEAAAAAAAAAUQJqZmZmZmRdAAAAAAAAAGEBmZmZmZmYYQGZmZmZmZhZAzczMzMzMGkBmZmZmZmYWQDMzMzMzMxdAzczMzMzMGEBmZmZmZmYWQJqZmZmZmRdAZmZmZmZmGEAzMzMzMzMZQGZmZmZmZhhAmpmZmZmZGUBmZmZmZmYaQDMzMzMzMxtAzczMzMzMGkAAAAAAAAAYQM3MzMzMzBZAAAAAAAAAFkAAAAAAAAAWQDMzMzMzMxdAAAAAAAAAGECamZmZmZkVQAAAAAAAABhAzczMzMzMGkAzMzMzMzMZQGZmZmZmZhZAAAAAAAAAFkAAAAAAAAAWQGZmZmZmZhhAMzMzMzMzF0AAAAAAAAAUQGZmZmZmZhZAzczMzMzMFkDNzMzMzMwWQM3MzMzMzBhAZmZmZmZmFEDNzMzMzMwWQA=="},"yaxis":"y","type":"scatter"},{"hovertemplate":"species=virginica\u003cbr\u003esepal_width=%{x}\u003cbr\u003esepal_length=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"virginica","marker":{"color":"#00cc96","symbol":"circle"},"mode":"markers","name":"virginica","orientation":"v","showlegend":true,"x":{"dtype":"f8","bdata":"ZmZmZmZmCkCamZmZmZkFQAAAAAAAAAhAMzMzMzMzB0AAAAAAAAAIQAAAAAAAAAhAAAAAAAAABEAzMzMzMzMHQAAAAAAAAARAzczMzMzMDECamZmZmZkJQJqZmZmZmQVAAAAAAAAACEAAAAAAAAAEQGZmZmZmZgZAmpmZmZmZCUAAAAAAAAAIQGZmZmZmZg5AzczMzMzMBECamZmZmZkBQJqZmZmZmQlAZmZmZmZmBkBmZmZmZmYGQJqZmZmZmQVAZmZmZmZmCkCamZmZmZkJQGZmZmZmZgZAAAAAAAAACEBmZmZmZmYGQAAAAAAAAAhAZmZmZmZmBkBmZmZmZmYOQGZmZmZmZgZAZmZmZmZmBkDNzMzMzMwEQAAAAAAAAAhAMzMzMzMzC0DNzMzMzMwIQAAAAAAAAAhAzczMzMzMCEDNzMzMzMwIQM3MzMzMzAhAmpmZmZmZBUCamZmZmZkJQGZmZmZmZgpAAAAAAAAACEAAAAAAAAAEQAAAAAAAAAhAMzMzMzMzC0AAAAAAAAAIQA=="},"xaxis":"x","y":{"dtype":"f8","bdata":"MzMzMzMzGUAzMzMzMzMXQGZmZmZmZhxAMzMzMzMzGUAAAAAAAAAaQGZmZmZmZh5AmpmZmZmZE0AzMzMzMzMdQM3MzMzMzBpAzczMzMzMHEAAAAAAAAAaQJqZmZmZmRlAMzMzMzMzG0DNzMzMzMwWQDMzMzMzMxdAmpmZmZmZGUAAAAAAAAAaQM3MzMzMzB5AzczMzMzMHkAAAAAAAAAYQJqZmZmZmRtAZmZmZmZmFkDNzMzMzMweQDMzMzMzMxlAzczMzMzMGkDNzMzMzMwcQM3MzMzMzBhAZmZmZmZmGECamZmZmZkZQM3MzMzMzBxAmpmZmZmZHUCamZmZmZkfQJqZmZmZmRlAMzMzMzMzGUBmZmZmZmYYQM3MzMzMzB5AMzMzMzMzGUCamZmZmZkZQAAAAAAAABhAmpmZmZmZG0DNzMzMzMwaQJqZmZmZmRtAMzMzMzMzF0AzMzMzMzMbQM3MzMzMzBpAzczMzMzMGkAzMzMzMzMZQAAAAAAAABpAzczMzMzMGECamZmZmZkXQA=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"sepal_width"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"sepal_length"}},"legend":{"title":{"text":"species"},"tracegroupgap":0},"title":{"text":"Interactive Plotly Scatter"}},                        {"responsive": true}                    ).then(function(){
-                            
-var gd = document.getElementById('32340178-52d9-4144-99e7-afce5699560c');
-var x = new MutationObserver(function (mutations, observer) {{
-        var display = window.getComputedStyle(gd).display;
-        if (!display || display === 'none') {{
-            console.log([gd, 'removed!']);
-            Plotly.purge(gd);
-            observer.disconnect();
-        }}
-}});
-
-// Listen for the removal of the full notebook cells
-var notebookContainer = gd.closest('#notebook-container');
-if (notebookContainer) {{
-    x.observe(notebookContainer, {childList: true});
-}}
-
-// Listen for the clearing of the current output cell
-var outputEl = gd.closest('.output');
-if (outputEl) {{
-    x.observe(outputEl, {childList: true});
-}}
-
-                        })                };            </script>        </div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reflection
 </div>
 </div>
-<p>This is a map:</p>
-<iframe src="https://www.google.com/maps/d/embed?mid=1L1EOKHYYIpvG8KEbe4iMEppFlZ598jA&amp;ehbc=2E312F" width="640" height="480" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-<p>Reading from a public Google Sheet (code and display the data):</p>
-<div id="e624d118" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sheet_id <span class="op">=</span> <span class="st">"1jcZAtyEZ_5Q7ruPaUYxErM_a4UP9dP9PwbnsRnVl0hE"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="ss">f"https://docs.google.com/spreadsheets/d/</span><span class="sc">{</span>sheet_id<span class="sc">}</span><span class="ss">/gviz/tq?tqx=out:csv"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Food</th>
-<th data-quarto-table-cell-role="th">Cost</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>Apple</td>
-<td>1.99</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>Pineapple</td>
-<td>3.99</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>Chicken</td>
-<td>4.99</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>Noodles</td>
-<td>2.99</td>
-</tr>
-</tbody>
-</table>
-
+<div class="callout-body-container callout-body">
+<ul>
+<li>[cite_start]What did the data help you understand that you couldn’t see before? [cite: 111]</li>
+<li>[cite_start]Did anything surprise you? [cite: 112]</li>
+<li>[cite_start]How might your data be incomplete or biased? [cite: 113]</li>
+</ul>
 </div>
 </div>
+<hr>
+</section>
+<section id="activity-2-explore-your-google-data" class="level2">
+<h2 class="anchored" data-anchor-id="activity-2-explore-your-google-data">1.4 Activity 2: Explore Your Google Data</h2>
+<p>[cite_start]<strong>Objective:</strong> To visualize the depth of personal data companies collect about you[cite: 115].</p>
+<p><strong>Instructions:</strong> 1. Go to <strong>Google Takeout</strong>. 2. [cite_start]Browse through the available sections to see what is stored—such as Search history, YouTube watch history, Calendar events, location data, and app activity[cite: 116]. 3. [cite_start]You do not need to download the data; just observing the categories is enough[cite: 117]. 4. [cite_start]Pay attention to details like timestamps, specific locations, and topics[cite: 118].</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>This is code snippet that is NOT runned:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> isOdd(n):</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> n<span class="op">%</span><span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>: </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reflection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>[cite_start]What types of data surprised you? [cite: 121]</li>
+<li>[cite_start]How detailed is the information? [cite: 122]</li>
+<li>[cite_start]Notice how much your online habits reveal about your interests, routines, and even your personality[cite: 119].</li>
+<li>[cite_start]How could someone else use this data if they had access to it? [cite: 123]</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="activity-3-text-message-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="activity-3-text-message-analysis">1.5 Activity 3: Text Message Analysis</h2>
+<p>[cite_start]<strong>Objective:</strong> To analyze your own communication patterns using data[cite: 125].</p>
+<p><strong>Instructions:</strong> [cite_start]Choose a recent text message conversation and record the following structured data[cite: 125]: * [cite_start]Number of messages sent vs.&nbsp;received[cite: 126]. * [cite_start]Average time between responses[cite: 127]. * [cite_start]The most frequently used words or emojis[cite: 128].</p>
+<p><strong>Sentiment Analysis:</strong> [cite_start]Next, use a <strong>Sentiment Analysis Tool</strong> to analyze the tone of your messages[cite: 129]. [cite_start]Copy and paste a short section of text into the tool to see if it identifies the tone as positive, negative, or neutral[cite: 130].</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reflection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>[cite_start]<strong>Communication Balance:</strong> Who tends to start conversations more often—you or your friend? [cite: 133]</li>
+<li>[cite_start]<strong>Message Length:</strong> Are your messages shorter or longer than your friend’s? [cite: 134]</li>
+<li>[cite_start]<strong>Relationship Insights:</strong> What might this say about your relationship? [cite: 135]</li>
+<li><strong>Machine Interpretation:</strong> Think about how the automated tool compared to your actual intent. [cite_start]How could a computer misread your tone (e.g., sarcasm or jokes)? [cite: 131, 136]</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="activity-4-pose-detection-computer-vision" class="level2">
+<h2 class="anchored" data-anchor-id="activity-4-pose-detection-computer-vision">1.6 Activity 4: Pose Detection &amp; Computer Vision</h2>
+<p>[cite_start]<strong>Objective:</strong> To understand how machines (AI) interpret physical movement and unstructured data[cite: 138].</p>
+<p><strong>Instructions:</strong> We will use a computer vision tool (like <a href="https://teachablemachine.withgoogle.com/">Teachable Machine</a>) to detect movements. 1. [cite_start]Open the pose-detection demo and allow your camera to detect your body[cite: 138]. 2. [cite_start]<strong>Move:</strong> Try raising your arms, turning sideways, or stepping out of the frame[cite: 139]. 3. [cite_start]<strong>Test Limits:</strong> Move faster or slower to see how accurately the computer tracks you[cite: 140]. 4. [cite_start]<strong>Experiment:</strong> Change lighting or camera angles to see what affects detection quality[cite: 141].</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Key Concept">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Key Concept
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>[cite_start]This activity demonstrates how AI vision systems work and where they struggle—a core concept in machine learning[cite: 142].</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Reflection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Reflection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>[cite_start]What happened when you moved quickly or out of frame? [cite: 144]</li>
+<li>[cite_start]What situations might cause the pose detector to fail? [cite: 145]</li>
+<li>[cite_start]How could pose detection be helpful in real-life situations (e.g., fitness apps, accessibility tools, or security)? [cite: 146]</li>
+</ul>
+</div>
+</div>
 
 
 </section>
